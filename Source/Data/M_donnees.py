@@ -3,10 +3,10 @@ from Source.Format.Interfaces.M_abstract_format import C_abstract_format
 
 
 class C_donnees(C_abstract_donnees):
-    def __init__(self):
-        self._nom: str = str()
-        self._valeur: bytearray = bytearray()
-        self._taille: int = int()
+    def __init__(self, nom: str, valeur: bytearray = bytearray(), taille: int = 0):
+        self._nom: str = nom
+        self._valeur: bytearray = valeur
+        self._taille: int = taille
 
     @property
     def nom(self) -> str:
@@ -41,11 +41,14 @@ class C_donnees(C_abstract_donnees):
         else:
             raise ValueError
 
+    @property
     def taille(self) -> int:
         return self._taille
 
     def importJSON(self, data: dict):
-        raise NotImplementedError
+        for k, v in data.items():
+            if v["type"] == "raw":
+                self.add_donnees(C_donnees(nom=k, valeur=bytearray.fromhex(v["valeur"]), taille=v["taille"]))
 
     def exportJSON(self, data: dict):
         raise NotImplementedError

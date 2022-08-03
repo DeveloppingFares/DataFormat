@@ -1,0 +1,7 @@
+{
+  "entete1" : {"type": "raw", "taille": 4, "valeur": "ACABACAB"},
+  "entete2" : {"type": "raw", "taille": 8, "valeur": "DEADBEEFDEADBEEF"},
+  "contenu1" : {"type": "raw", "taille": 4, "valeur": "ACABACAB"},
+  "contenu2" : {"type": "raw", "taille": 8, "valeur": "DEADBEEFDEADBEEF"},
+  "crc" : {"type": "raw", "taille": 4, "valeur": "ACABACAB"}
+}

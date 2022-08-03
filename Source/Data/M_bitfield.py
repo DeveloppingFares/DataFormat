@@ -7,7 +7,7 @@ class C_bitfield(C_abstract_donnees):
     def __init__(self):
         self._nom: str = str()
         self._valeur: int = int()
-        self._taille: int = int()  # Taille en bits
+        self._taille: int = 0  # Taille en bits
 
     @property
     def nom(self) -> str:
