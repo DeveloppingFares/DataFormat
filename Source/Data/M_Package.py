@@ -1,12 +1,13 @@
-from Source.Data.Interfaces.M_abstract_donnees import C_abstract_donnees
+from Source.Data.Interfaces.M_Donnees import C_abstract_donnees
 from Source.Format.Interfaces.M_abstract_format import C_abstract_format
 
 
 class C_donnees(C_abstract_donnees):
-    def __init__(self, nom: str, valeur: bytearray = bytearray(), taille: int = 0):
+    def __init__(self, nom: str, dependance: list, valeur: bytearray = bytearray(), taille: int = 0):
         self._nom: str = nom
         self._valeur: bytearray = valeur
         self._taille: int = taille
+        self._dependance = dependance
 
     @property
     def nom(self) -> str:
@@ -46,9 +47,14 @@ class C_donnees(C_abstract_donnees):
         return self._taille
 
     def importJSON(self, data: dict):
-        for k, v in data.items():
+        for nom, v in data.items():
             if v["type"] == "raw":
-                self.add_donnees(C_donnees(nom=k, valeur=bytearray.fromhex(v["valeur"]), taille=v["taille"]))
+                valeur = bytearray.fromhex(v["valeur"])
+                taille = v["taille"]
+                dependance = v["dependance"]
+                if taille != len(valeur):
+                    raise Exception
+                self.add_donnees(C_donnees(nom=nom, valeur=valeur, taille=taille, dependance=dependance))
 
     def exportJSON(self, data: dict):
         raise NotImplementedError

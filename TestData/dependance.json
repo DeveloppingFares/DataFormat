@@ -1,0 +1,7 @@
+{
+  "nom": "champ_externe",
+  "type": "raw",
+  "taille": 4,
+  "valeur": "ACABACAB",
+  "dependance": []
+}

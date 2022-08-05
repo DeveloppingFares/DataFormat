@@ -1,0 +1,55 @@
+{
+  "nom": "bitfield1",
+  "type": "bitfield",
+  "dependance": [],
+  "elements": [
+    {
+      "nom": "champ1",
+      "type": "field",
+      "taille": 4,
+      "offset": 0,
+      "valeur": "1001",
+      "dependance": []
+    },
+    {
+      "nom": "champ1",
+      "type": "field",
+      "taille": 8,
+      "offset": 4,
+      "valeur": "01010101",
+      "dependance": []
+    },
+    {
+      "nom": "champ3",
+      "type": "field",
+      "taille": 4,
+      "offset": 12,
+      "valeur": "1100",
+      "dependance": []
+    },
+    {
+      "nom": "champ4",
+      "type": "field",
+      "taille": 8,
+      "offset": 16,
+      "valeur": "10101010",
+      "dependance": []
+    },
+    {
+      "nom": "champ5",
+      "type": "field",
+      "taille": 4,
+      "offset": 24,
+      "valeur": "1111",
+      "dependance": []
+    },
+    {
+      "nom": "champ6",
+      "type": "field",
+      "taille": 4,
+      "offset": 28,
+      "valeur": "0000",
+      "dependance": []
+    }
+  ]
+}

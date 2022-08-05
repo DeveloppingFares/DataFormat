@@ -1,7 +1,7 @@
-class C_field(object):
-    def __init__(self, taille, offset):
-        self._nom: str = str()
-        self._valeur: int = int()
+class C_Field(object):
+    def __init__(self, nom: str, taille: int, offset: int, valeur: int = int()):
+        self._nom: str = nom
+        self._valeur: int = valeur
         self._offset: int = offset
         self._taille: int = taille
         self._masque = (0xFFFFFFFF >> (32 - self._taille)) << self._offset
