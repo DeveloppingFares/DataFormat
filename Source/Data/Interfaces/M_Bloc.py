@@ -1,8 +1,8 @@
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 from Source.Data.Interfaces.M_Donnees import C_Donnees
 
 
-class C_Bloc(metaclass=C_Donnees):
+class C_Bloc(C_Donnees):
     @property
     @abstractmethod
     def valeur(self) -> bytearray:

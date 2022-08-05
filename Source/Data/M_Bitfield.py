@@ -4,6 +4,7 @@ from Source.Data.M_Field import C_Field
 
 class C_Bitfield(C_Bloc):
     def __init__(self, nom: str, dependance: list, elements: list):
+        super().__init__()
         self._nom: str = nom
         self._valeur: int = int()
         self._taille: int = 0  # Taille en bits

@@ -1,4 +1,7 @@
-class C_Field(object):
+from Source.Data.Interfaces.M_Donnees import C_Donnees
+
+
+class C_Field(C_Donnees):
     def __init__(self, nom: str, taille: int, offset: int, valeur: int = int()):
         self._nom: str = nom
         self._valeur: int = valeur
