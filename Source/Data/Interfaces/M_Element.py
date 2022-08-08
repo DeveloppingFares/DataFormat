@@ -1,16 +1,16 @@
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 from Source.Data.Interfaces.M_Donnees import C_Donnees
 
 
-class C_Bloc(metaclass=C_Donnees):
+class C_Element(metaclass=C_Donnees):
     @property
     @abstractmethod
-    def valeur(self) -> bytearray:
+    def valeur(self) -> str:
         raise NotImplementedError
 
     @valeur.setter
     @abstractmethod
-    def valeur(self, v: bytearray):
+    def valeur(self, v: str):
         raise NotImplementedError
 
     @classmethod

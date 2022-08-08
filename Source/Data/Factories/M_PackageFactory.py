@@ -1,5 +1,5 @@
 from Source.Data.Interfaces.M_Donnees import C_abstract_donnees
-from Source.Format.Interfaces.M_abstract_format import C_abstract_format
+from Source.Data.Format import C_abstract_format
 
 
 class C_donnees(C_abstract_donnees):

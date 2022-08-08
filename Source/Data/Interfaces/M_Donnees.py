@@ -36,11 +36,7 @@ class C_Donnees(C_observable, metaclass=C_observer):
 
     @property
     @abstractmethod
-    def taille(self) -> int:
-        raise NotImplementedError
-
-    @abstractmethod
-    def random(self, data: dict):
+    def random(self) -> int | bytearray:
         raise NotImplementedError
 
     @classmethod

@@ -1,7 +1,7 @@
 import os
 import json
-from Source.Data.M_Package import C_donnees
-from Source.Data.M_Bitfield import C_bitfield
+from Source.Data.Format.M_Package import C_donnees
+from Source.Data.Format.M_Bitfield import C_bitfield
 
 
 def importJson(dirPath: str):
