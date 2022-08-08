@@ -1,6 +1,6 @@
 {
   "nom": "champ_externe",
-  "type": "raw",
+  "type_element": "buffer",
   "taille": 4,
   "valeur": "ACABACAB",
   "dependance": []

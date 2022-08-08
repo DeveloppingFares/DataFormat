@@ -1,38 +1,38 @@
 {
   "nom": "exemple",
-  "type": "donnees",
+  "type_element": "package",
   "elements": [
     {
       "nom": "entete1",
-      "type": "raw",
+      "type_element": "buffer",
       "taille": 4,
       "valeur": "ACABACAB",
       "dependance": []
     },
     {
       "nom": "entete2",
-      "type": "raw",
+      "type_element": "buffer",
       "taille": 8,
       "valeur": "BADBAFFEBADBAFFE",
       "dependance": []
     },
     {
       "nom": "contenu1",
-      "type": "raw",
+      "type_element": "buffer",
       "taille": 8,
       "valeur": "DEADBEEFDEADBEEF",
       "dependance": []
     },
     {
       "nom": "contenu2",
-      "type": "raw",
+      "type_element": "buffer",
       "taille": 4,
       "valeur": "CAFECAFE",
       "dependance": []
     },
     {
       "nom": "crc",
-      "type": "raw",
+      "type_element": "buffer",
       "taille": 4,
       "valeur": "ACABACAB",
       "dependance": []
