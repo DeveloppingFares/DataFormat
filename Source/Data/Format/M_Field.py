@@ -1,13 +1,16 @@
+from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Donnees import C_Donnees
 
 
-class C_Field(C_Donnees):
+class C_Field(C_observable, C_Donnees):
     def __init__(self, nom: str, description: str, dependance: list, taille: int, offset: int, valeur: int):
-        super().__init__()
         self._valeur: int = valeur
         self._offset: int = offset
         self._taille: int = taille
         self._masque: int = (0xFFFFFFFF >> (32 - self._taille)) << self._offset
+
+        # Depuis Observable
+        super().__init__()
 
         # Depuis Donnees
         self._nom: str = nom
@@ -51,4 +54,7 @@ class C_Field(C_Donnees):
 
     @property
     def random(self) -> int:
+        raise NotImplementedError
+
+    def update(self, **kwargs) -> None:
         raise NotImplementedError

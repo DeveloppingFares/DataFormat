@@ -1,10 +1,14 @@
 import os
+from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Element import C_Element
 
 
-class C_Processed(C_Element):
+class C_Processed(C_observable, C_Element):
     def __init__(self, nom: str, description: str, dependance: list, taille: int, processor: callable):
         self._processor = processor
+
+        # Depuis Observable
+        super().__init__()
 
         # Depuis Donnees
         self._nom: str = nom
@@ -32,6 +36,9 @@ class C_Processed(C_Element):
     @property
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
+
+    def update(self, **kwargs) -> None:
+        raise NotImplementedError
 
     # ==================================================================================================================
     # Depuis Element

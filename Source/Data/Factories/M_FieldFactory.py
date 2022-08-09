@@ -4,4 +4,6 @@ from Source.Data.Format.M_Field import C_Field
 
 class C_FieldFactory(C_DonneesFactory):
     def creerDonnees(self, **kwargs) -> C_Field:
+        del kwargs["type_element"]
+        kwargs["valeur"] = int(kwargs.get("valeur"), 2)
         return C_Field(**kwargs)

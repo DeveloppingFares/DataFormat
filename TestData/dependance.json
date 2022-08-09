@@ -1,5 +1,6 @@
 {
   "nom": "champ_externe",
+  "description": "",
   "type_element": "buffer",
   "taille": 4,
   "valeur": "ACABACAB",

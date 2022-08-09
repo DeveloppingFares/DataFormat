@@ -1,8 +1,8 @@
-from abc import abstractmethod
+from abc import ABCMeta, abstractmethod
 from Source.Data.Interfaces.M_Donnees import C_Donnees
 
 
-class C_Element(metaclass=C_Donnees):
+class C_Element(C_Donnees, metaclass=ABCMeta):
     @property
     @abstractmethod
     def valeur(self) -> str:

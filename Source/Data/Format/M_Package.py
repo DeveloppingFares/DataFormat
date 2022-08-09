@@ -1,17 +1,23 @@
 import os
+from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Bloc import C_Bloc
 from Source.Data.Interfaces.M_Element import C_Element
 
 
-class C_Package(C_Bloc):
+class C_Package(C_observable, C_Bloc):
     def __init__(self, nom: str, description: str, dependance: list, elements: list):
         # Depuis Donnees
         self._nom: str = nom
         self._description: str = description
         self._dependance: list = dependance
 
+        # Depuis Observable
+        super().__init__()
+
         # Depuis Bloc
         self._elements: list = elements
+        for element in elements:
+            setattr(self, element.nom, element)
 
     # ==================================================================================================================
     # Depuis Donnees
@@ -31,6 +37,9 @@ class C_Package(C_Bloc):
     @property
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
+
+    def update(self, **kwargs) -> None:
+        raise NotImplementedError
 
     # ==================================================================================================================
     # Depuis Bloc

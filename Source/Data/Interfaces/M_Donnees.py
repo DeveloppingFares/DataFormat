@@ -1,10 +1,9 @@
-from abc import abstractmethod
+from abc import ABCMeta, abstractmethod
 from Source.Observer.M_observer import C_observer
-from Source.Observer.M_observable import C_observable
 from enum import Enum
 
 
-class C_Donnees(C_observable, metaclass=C_observer):
+class C_Donnees(C_observer, metaclass=ABCMeta):
     class type_donnees(Enum):
         bitfield = "bitfield"
         buffer = "buffer"

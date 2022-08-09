@@ -1,8 +1,9 @@
 from random import randint
+from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Element import C_Element
 
 
-class C_Range(C_Element):
+class C_Range(C_observable, C_Element):
     def __init__(self, nom: str, description: str, dependance: list, taille: int, valeur: int, valeur_min: int, valeur_max: int):
         self._valeur_min: int = valeur_min
         self._valeur_max: int = valeur_max
@@ -10,6 +11,9 @@ class C_Range(C_Element):
             self._valeur = valeur
         else:
             raise ValueError(f"Valeur hors des limites définies pour le range {self.nom}")
+
+        # Depuis Observable
+        super().__init__()
 
         # Depuis Donnees
         self._nom: str = nom
@@ -37,6 +41,9 @@ class C_Range(C_Element):
     @property
     def random(self) -> bytearray:
         return bytearray(randint(self._valeur_min, self._valeur_max).to_bytes(self.taille, 'big'))
+
+    def update(self, **kwargs) -> None:
+        raise NotImplementedError
 
     # ==================================================================================================================
     # Depuis Element

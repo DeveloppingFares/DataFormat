@@ -4,4 +4,5 @@ from Source.Data.Format.M_Enumerate import C_Enumerate
 
 class C_EnumerateFactory(C_DonneesFactory):
     def creerDonnees(self, **kwargs) -> C_Enumerate:
+        del kwargs["type_element"]
         return C_Enumerate(**kwargs)

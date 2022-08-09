@@ -1,10 +1,14 @@
 import os
+from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Bloc import C_Bloc
 from Source.Data.Format.M_Field import C_Field
 
 
-class C_Bitfield(C_Bloc):
+class C_Bitfield(C_Bloc, C_observable):
     def __init__(self, nom: str, description: str, dependance: list, elements: list):
+        # Depuis Observable
+        super().__init__()
+
         # Depuis Donnees
         self._nom: str = nom
         self._description: str = description
@@ -12,6 +16,8 @@ class C_Bitfield(C_Bloc):
 
         # Depuis Bloc
         self._elements: list = elements
+        for element in elements:
+            setattr(self, element.nom, element)
 
     # ==================================================================================================================
     # Depuis Donnees
@@ -31,6 +37,9 @@ class C_Bitfield(C_Bloc):
     @property
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
+
+    def update(self, **kwargs) -> None:
+        raise NotImplementedError
 
     # ==================================================================================================================
     # Depuis Bloc

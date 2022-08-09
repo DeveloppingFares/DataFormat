@@ -1,9 +1,12 @@
 {
   "nom": "exemple",
+  "description": "",
   "type_element": "package",
+  "dependance": [],
   "elements": [
     {
       "nom": "entete1",
+      "description": "",
       "type_element": "buffer",
       "taille": 4,
       "valeur": "ACABACAB",
@@ -11,6 +14,7 @@
     },
     {
       "nom": "entete2",
+      "description": "",
       "type_element": "buffer",
       "taille": 8,
       "valeur": "BADBAFFEBADBAFFE",
@@ -18,6 +22,7 @@
     },
     {
       "nom": "contenu1",
+      "description": "",
       "type_element": "buffer",
       "taille": 8,
       "valeur": "DEADBEEFDEADBEEF",
@@ -25,6 +30,7 @@
     },
     {
       "nom": "contenu2",
+      "description": "",
       "type_element": "buffer",
       "taille": 4,
       "valeur": "CAFECAFE",
@@ -32,6 +38,7 @@
     },
     {
       "nom": "crc",
+      "description": "",
       "type_element": "buffer",
       "taille": 4,
       "valeur": "ACABACAB",

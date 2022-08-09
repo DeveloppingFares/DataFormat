@@ -1,12 +1,16 @@
 import os
+from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Element import C_Element
 
 
-class C_Buffer(C_Element):
+class C_Buffer(C_observable, C_Element):
     def __init__(self, nom: str, description: str, dependance: list, taille: int, valeur: bytearray):
         if len(valeur) != taille:
             raise ValueError(f"Taille de la valeur d'initialisation du buffer {nom} incohérente")
         self._valeur: bytearray = valeur
+
+        # Depuis Observable
+        super().__init__()
 
         # Depuis Donnees
         self._nom: str = nom
@@ -34,6 +38,9 @@ class C_Buffer(C_Element):
     @property
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
+
+    def update(self, **kwargs) -> None:
+        raise NotImplementedError
 
     # ==================================================================================================================
     # Depuis Element
