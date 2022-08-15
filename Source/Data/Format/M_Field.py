@@ -24,6 +24,7 @@ class C_Field(C_observable, C_Donnees):
     @valeur.setter
     def valeur(self, v: int):
         self._valeur = v
+        self.notify()
 
     @property
     def offset(self) -> int:
@@ -55,6 +56,13 @@ class C_Field(C_observable, C_Donnees):
     @property
     def random(self) -> int:
         raise NotImplementedError
+
+    # ==================================================================================================================
+    # Depuis Observer
+    # ==================================================================================================================
+    def ajout_observer(self):
+        for dependance in self.dependance:
+            dependance.ajout_observer(self)
 
     def update(self, **kwargs) -> None:
         raise NotImplementedError

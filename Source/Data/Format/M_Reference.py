@@ -1,4 +1,3 @@
-import os
 from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Element import C_Element
 from Source.Data.Interfaces.M_Bloc import C_Bloc
@@ -51,6 +50,12 @@ class C_Reference(C_observable, C_Element):
         self.chargement_reference()
         return self._reference.random
 
+    # ==================================================================================================================
+    # Depuis Observer
+    # ==================================================================================================================
+    def ajout_observer(self):
+        pass
+
     def update(self, **kwargs) -> None:
         self.chargement_reference()
         raise NotImplementedError
@@ -67,6 +72,7 @@ class C_Reference(C_observable, C_Element):
     def valeur(self, v: bytearray):
         self.chargement_reference()
         self._reference.valeur = v
+        self.notify()
 
     @property
     def taille(self) -> int:

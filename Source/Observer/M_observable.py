@@ -6,7 +6,6 @@ class C_observable(object):
         self._observers = list()
 
     def add_observer(self, observer: C_observer) -> None:
-        print("Subject: Attached an observer.")
         self._observers.append(observer)
 
     def remove_observer(self, observer: C_observer) -> None:
@@ -14,4 +13,4 @@ class C_observable(object):
 
     def notify(self) -> None:
         for observer in self._observers:
-            observer.update(self)
+            observer.update()

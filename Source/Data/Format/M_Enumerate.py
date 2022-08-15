@@ -39,6 +39,13 @@ class C_Enumerate(C_observable, C_Element):
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
 
+    # ==================================================================================================================
+    # Depuis Observer
+    # ==================================================================================================================
+    def ajout_observer(self):
+        for dependance in self.dependance:
+            dependance.ajout_observer(self)
+
     def update(self, **kwargs) -> None:
         raise NotImplementedError
 
@@ -54,6 +61,7 @@ class C_Enumerate(C_observable, C_Element):
         if len(v) != self.taille:
             raise ValueError(f"Taille de la valeur d'initialisation du buffer {self.nom} incohérente")
         self._valeur = v
+        self.notify()
 
     @property
     def taille(self) -> int:

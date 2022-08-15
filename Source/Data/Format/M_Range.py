@@ -42,6 +42,13 @@ class C_Range(C_observable, C_Element):
     def random(self) -> bytearray:
         return bytearray(randint(self._valeur_min, self._valeur_max).to_bytes(self.taille, 'big'))
 
+    # ==================================================================================================================
+    # Depuis Observer
+    # ==================================================================================================================
+    def ajout_observer(self):
+        for dependance in self.dependance:
+            dependance.ajout_observer(self)
+
     def update(self, **kwargs) -> None:
         raise NotImplementedError
 
@@ -67,6 +74,7 @@ class C_Range(C_observable, C_Element):
             self._valeur = v_int
         else:
             raise ValueError(f"Valeur hors des limites définies pour le range {self.nom}")
+        self.notify()
 
     @property
     def taille(self) -> int:

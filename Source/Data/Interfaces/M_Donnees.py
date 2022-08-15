@@ -38,8 +38,12 @@ class C_Donnees(C_observer, metaclass=ABCMeta):
     def random(self) -> int | bytearray:
         raise NotImplementedError
 
+    @abstractmethod
+    def ajout_observer(self, observer: C_observer):
+        raise NotImplementedError
+
     @classmethod
     def __subclasshook__(cls, c):
-        if "nom" in vars(c) and "description" in vars(c) and "dependance" in c.__dict__:
+        if "nom" in vars(c) and "description" in vars(c) and "dependance" in c.__dict__ and "ajout_observer" in vars(c):
             return True
         return False

@@ -1,6 +1,7 @@
 import json
 import os
 from enum import Enum
+from Source.Data.Interfaces.M_Donnees import C_Donnees
 from Source.Data.Format.M_Package import C_Package
 from Source.Data.Format.M_Bitfield import C_Bitfield
 from Source.Data.Format.M_Enumerate import C_Enumerate
@@ -14,6 +15,7 @@ from Source.Data.Factories.M_ProcessedFactory import C_ProcessedFactory
 from Source.Data.Factories.M_BufferFactory import C_BufferFactory
 from Source.Data.Factories.M_RangeFactory import C_RangeFactory
 from Source.Data.Factories.M_ReferenceFactory import C_ReferenceFactory
+from Source.Data.Factories.M_DependanceFactory import C_DependanceFactory
 
 
 class C_Librairie(object):
@@ -26,6 +28,7 @@ class C_Librairie(object):
         processed = "processed"
         range = "range"
         reference = "reference"
+        dependance = "dependance"
 
     def __init__(self):
         pass
@@ -77,6 +80,8 @@ class C_Librairie(object):
             return C_FieldFactory(self)
         elif type_element == C_Librairie.type_donnees.reference.value:
             return C_ReferenceFactory(self)
+        elif type_element == C_Librairie.type_donnees.dependance.value:
+            return C_DependanceFactory(self)
         else:
             raise ValueError
 
@@ -89,3 +94,8 @@ class C_Librairie(object):
             else:
                 return None
         return objet
+
+    def ajout_observer(self):
+        for attr in self.__dict__.values():
+            if issubclass(type(attr), C_Donnees):
+                attr.ajout_observer()

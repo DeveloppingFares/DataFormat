@@ -41,6 +41,16 @@ class C_Bitfield(C_Bloc, C_observable):
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
 
+    # ==================================================================================================================
+    # Depuis Observer
+    # ==================================================================================================================
+    def ajout_observer(self):
+        for dependance in self.dependance:
+            dependance.ajout_observer(self)
+        for attr in self.__dict__.values():
+            if isinstance(attr, C_Field):
+                attr.ajout_observer()
+
     def update(self, **kwargs) -> None:
         raise NotImplementedError
 
@@ -68,6 +78,7 @@ class C_Bitfield(C_Bloc, C_observable):
                     attr.valeur = (int.from_bytes(v, 'big') & attr.masque) >> attr.offset
         else:
             raise AttributeError(f"Bitfield {self.nom} ne contient aucun élément")
+        self.notify()
 
     @property
     def taille(self) -> int:

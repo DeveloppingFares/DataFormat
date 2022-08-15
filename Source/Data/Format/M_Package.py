@@ -44,6 +44,16 @@ class C_Package(C_observable, C_Bloc):
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
 
+    # ==================================================================================================================
+    # Depuis Observer
+    # ==================================================================================================================
+    def ajout_observer(self):
+        for dependance in self.dependance:
+            dependance.ajout_observer(self)
+        for attr in self.__dict__.values():
+            if issubclass(type(attr), C_Element):
+                attr.ajout_observer()
+
     def update(self, **kwargs) -> None:
         raise NotImplementedError
 
@@ -70,6 +80,7 @@ class C_Package(C_observable, C_Bloc):
                     del v[:attr.taille]
         else:
             raise AttributeError(f"Package {self.nom} ne contient aucun élément")
+        self.notify()
 
     @property
     def taille(self) -> int:

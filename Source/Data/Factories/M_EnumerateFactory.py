@@ -7,5 +7,9 @@ class C_EnumerateFactory(C_DonneesFactory):
         self.librairie = librairie
 
     def creerDonnees(self, **kwargs) -> C_Enumerate:
+        dependances = list()
+        for dependance in kwargs["dependance"]:
+            dependances.append(self.librairie.getFactory("dependance").creerDonnees(dependance))
+        kwargs["dependance"] = dependances
         del kwargs["type_element"]
         return C_Enumerate(**kwargs)

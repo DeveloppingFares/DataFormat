@@ -37,6 +37,13 @@ class C_Processed(C_observable, C_Element):
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
 
+    # ==================================================================================================================
+    # Depuis Observer
+    # ==================================================================================================================
+    def ajout_observer(self):
+        for dependance in self.dependance:
+            dependance.ajout_observer(self)
+
     def update(self, **kwargs) -> None:
         raise NotImplementedError
 
@@ -45,6 +52,7 @@ class C_Processed(C_observable, C_Element):
     # ==================================================================================================================
     @property
     def valeur(self) -> bytearray:
+        self.notify()
         return self._processor()
 
     @property

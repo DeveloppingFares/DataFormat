@@ -7,6 +7,10 @@ class C_FieldFactory(C_DonneesFactory):
         self.librairie = librairie
 
     def creerDonnees(self, **kwargs) -> C_Field:
+        dependances = list()
+        for dependance in kwargs["dependance"]:
+            dependances.append(self.librairie.getFactory("dependance").creerDonnees(dependance))
+        kwargs["dependance"] = dependances
         del kwargs["type_element"]
         kwargs["valeur"] = int(kwargs.get("valeur"), 2)
         return C_Field(**kwargs)
