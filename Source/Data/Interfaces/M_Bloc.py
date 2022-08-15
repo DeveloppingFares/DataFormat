@@ -49,8 +49,8 @@ class C_Bloc(C_Donnees, metaclass=ABCMeta):
     @classmethod
     def __subclasshook__(cls, c):
         if issubclass(c, C_Donnees) and \
-           any("elements" in b.__dict__ for b in c.__mro__) and \
-           any("taille" in vars(b) for b in c.__mro__) and \
-           any("valeur" in vars(b) for b in c.__mro__):
+           "elements" in c.__dict__ and \
+           "taille" in vars(c) and \
+           "valeur" in vars(c):
             return True
-        return NotImplemented
+        return False

@@ -17,7 +17,10 @@ class C_Bitfield(C_Bloc, C_observable):
         # Depuis Bloc
         self._elements: list = elements
         for element in elements:
-            setattr(self, element.nom, element)
+            if not hasattr(self, element.nom):
+                setattr(self, element.nom, element)
+            else:
+                raise KeyError(f"Le bitfield {self.nom} contient deja un attribut {element.nom}")
 
     # ==================================================================================================================
     # Depuis Donnees

@@ -1,18 +1,8 @@
 from abc import ABCMeta, abstractmethod
 from Source.Observer.M_observer import C_observer
-from enum import Enum
 
 
 class C_Donnees(C_observer, metaclass=ABCMeta):
-    class type_donnees(Enum):
-        bitfield = "bitfield"
-        buffer = "buffer"
-        enumerate = "enumerate"
-        field = "field"
-        package = "package"
-        processed = "processed"
-        range = "range"
-
     @property
     @abstractmethod
     def nom(self) -> str:
@@ -35,13 +25,21 @@ class C_Donnees(C_observer, metaclass=ABCMeta):
 
     @property
     @abstractmethod
+    def dependance(self) -> list:
+        raise NotImplementedError
+
+    @dependance.setter
+    @abstractmethod
+    def dependance(self, v: list):
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
     def random(self) -> int | bytearray:
         raise NotImplementedError
 
     @classmethod
     def __subclasshook__(cls, c):
-        if any("nom" in vars(b) for b in c.__mro__) and \
-           any("description" in vars(b) for b in c.__mro__) and \
-           any("dependance" in b.__dict__ for b in c.__mro__):
+        if "nom" in vars(c) and "description" in vars(c) and "dependance" in c.__dict__:
             return True
-        return NotImplemented
+        return False

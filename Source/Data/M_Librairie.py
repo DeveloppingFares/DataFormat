@@ -1,5 +1,6 @@
 import json
 import os
+from enum import Enum
 from Source.Data.Format.M_Package import C_Package
 from Source.Data.Format.M_Bitfield import C_Bitfield
 from Source.Data.Format.M_Enumerate import C_Enumerate
@@ -12,10 +13,20 @@ from Source.Data.Factories.M_FieldFactory import C_FieldFactory
 from Source.Data.Factories.M_ProcessedFactory import C_ProcessedFactory
 from Source.Data.Factories.M_BufferFactory import C_BufferFactory
 from Source.Data.Factories.M_RangeFactory import C_RangeFactory
-from Source.Data.Interfaces.M_Donnees import C_Donnees
+from Source.Data.Factories.M_ReferenceFactory import C_ReferenceFactory
 
 
 class C_Librairie(object):
+    class type_donnees(Enum):
+        bitfield = "bitfield"
+        buffer = "buffer"
+        enumerate = "enumerate"
+        field = "field"
+        package = "package"
+        processed = "processed"
+        range = "range"
+        reference = "reference"
+
     def __init__(self):
         pass
 
@@ -47,23 +58,34 @@ class C_Librairie(object):
             setattr(self, nom_element, self.getFactory(type_element).creerDonnees(**kwargs))
         return self.__getattribute__(nom_element)
 
-    @staticmethod
-    def getFactory(type_element: str):
-        if type_element == C_Donnees.type_donnees.package.value:
+    def getFactory(self, type_element: str):
+        if type_element == C_Librairie.type_donnees.package.value:
             from Source.Data.Factories.M_PackageFactory import C_PackageFactory
-            return C_PackageFactory()
-        elif type_element == C_Donnees.type_donnees.bitfield.value:
+            return C_PackageFactory(self)
+        elif type_element == C_Librairie.type_donnees.bitfield.value:
             from Source.Data.Factories.M_BitfieldFactory import C_BitfieldFactory
-            return C_BitfieldFactory()
-        elif type_element == C_Donnees.type_donnees.buffer.value:
-            return C_BufferFactory()
-        elif type_element == C_Donnees.type_donnees.enumerate.value:
-            return C_EnumerateFactory()
-        elif type_element == C_Donnees.type_donnees.processed.value:
-            return C_ProcessedFactory()
-        elif type_element == C_Donnees.type_donnees.range.value:
-            return C_RangeFactory()
-        elif type_element == C_Donnees.type_donnees.field.value:
-            return C_FieldFactory()
+            return C_BitfieldFactory(self)
+        elif type_element == C_Librairie.type_donnees.buffer.value:
+            return C_BufferFactory(self)
+        elif type_element == C_Librairie.type_donnees.enumerate.value:
+            return C_EnumerateFactory(self)
+        elif type_element == C_Librairie.type_donnees.processed.value:
+            return C_ProcessedFactory(self)
+        elif type_element == C_Librairie.type_donnees.range.value:
+            return C_RangeFactory(self)
+        elif type_element == C_Librairie.type_donnees.field.value:
+            return C_FieldFactory(self)
+        elif type_element == C_Librairie.type_donnees.reference.value:
+            return C_ReferenceFactory(self)
         else:
             raise ValueError
+
+    def cherche_attribut(self, chemin_attribut: str):
+        objet = self
+        liste_chemin = chemin_attribut.split('.')
+        for attr in liste_chemin:
+            if attr in objet.__dict__:
+                objet = objet.__getattribute__(attr)
+            else:
+                return None
+        return objet

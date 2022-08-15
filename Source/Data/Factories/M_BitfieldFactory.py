@@ -4,10 +4,13 @@ from Source.Data.Format.M_Bitfield import C_Bitfield
 
 
 class C_BitfieldFactory(C_DonneesFactory):
+    def __init__(self, librairie):
+        self.librairie = librairie
+
     def creerDonnees(self, **kwargs) -> C_Bitfield:
         elements = list()
         for element in kwargs["elements"]:
-            elements.append(C_Librairie.getFactory(element.get("type_element")).creerDonnees(**element))
+            elements.append(self.librairie.getFactory(element.get("type_element")).creerDonnees(**element))
         kwargs["elements"] = elements
         del kwargs["type_element"]
         return C_Bitfield(**kwargs)

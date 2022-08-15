@@ -5,17 +5,21 @@ from Source.Data.Interfaces.M_Donnees import C_Donnees
 class C_Element(C_Donnees, metaclass=ABCMeta):
     @property
     @abstractmethod
-    def valeur(self) -> str:
+    def valeur(self) -> bytearray:
         raise NotImplementedError
 
     @valeur.setter
     @abstractmethod
-    def valeur(self, v: str):
+    def valeur(self, v: bytearray):
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def taille(self) -> int:
         raise NotImplementedError
 
     @classmethod
     def __subclasshook__(cls, c):
-        if any("taille" in b.__dict__ for b in c.__mro__) and \
-           any("valeur" in vars(b) for b in c.__mro__):
+        if issubclass(c, C_Donnees) and "taille" in vars(c) and "valeur" in vars(c) and "offset" not in vars(c):
             return True
-        return NotImplemented
+        return False

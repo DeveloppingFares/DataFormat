@@ -17,7 +17,13 @@ class C_Package(C_observable, C_Bloc):
         # Depuis Bloc
         self._elements: list = elements
         for element in elements:
-            setattr(self, element.nom, element)
+            if issubclass(type(element), C_Element) or issubclass(type(element), C_Bloc):
+                if not hasattr(self, element.nom):
+                    setattr(self, element.nom, element)
+                else:
+                    raise KeyError(f"Le package {self.nom} contient deja un attribut {element.nom}")
+            else:
+                raise ValueError(f"L'element {element.nom} fournie pour le package {self.nom} n'est pas de type Element")
 
     # ==================================================================================================================
     # Depuis Donnees
@@ -46,10 +52,10 @@ class C_Package(C_observable, C_Bloc):
     # ==================================================================================================================
     @property
     def valeur(self) -> bytearray:
-        if any(issubclass(type(attr), C_Element) for attr in self.__dict__.values()):
+        if any(issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc) for attr in self.__dict__.values()):
             v = bytearray()
             for attr in self.__dict__.values():
-                if issubclass(type(attr), C_Element):
+                if issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc):
                     v += attr.valeur
             return v
         else:
@@ -57,9 +63,9 @@ class C_Package(C_observable, C_Bloc):
 
     @valeur.setter
     def valeur(self, v: bytearray):
-        if any(issubclass(type(attr), C_Element) for attr in self.__dict__.values()):
+        if any(issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc) for attr in self.__dict__.values()):
             for attr in self.__dict__.values():
-                if issubclass(type(attr), C_Element):
+                if issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc):
                     attr.valeur = v[:attr.taille]
                     del v[:attr.taille]
         else:
@@ -68,9 +74,9 @@ class C_Package(C_observable, C_Bloc):
     @property
     def taille(self) -> int:
         t: int = 0
-        if any(issubclass(type(attr), C_Element) for attr in self.__dict__.values()):
+        if any(issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc) for attr in self.__dict__.values()):
             for attr in self.__dict__.values():
-                if issubclass(type(attr), C_Element):
+                if issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc):
                     t += attr.taille
         else:
             raise AttributeError(f"Package {self.nom} ne contient aucun élément")

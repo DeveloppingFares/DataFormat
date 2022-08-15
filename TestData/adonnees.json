@@ -1,0 +1,74 @@
+{
+  "nom": "exemple",
+  "description": "",
+  "type_element": "package",
+  "dependance": [],
+  "elements": [
+    {
+      "nom": "entete",
+      "description": "",
+      "type_element": "package",
+      "dependance": [],
+      "elements": [
+        {
+          "nom": "entete1",
+          "description": "",
+          "type_element": "buffer",
+          "taille": 4,
+          "valeur": "ACABACAB",
+          "dependance": []
+        },
+        {
+          "nom": "entete2",
+          "description": "",
+          "type_element": "buffer",
+          "taille": 8,
+          "valeur": "BADBAFFEBADBAFFE",
+          "dependance": []
+        }
+      ]
+    },
+    {
+      "nom": "contenu",
+      "description": "",
+      "type_element": "package",
+      "dependance": [],
+      "elements": [
+        {
+          "nom": "contenu1",
+          "description": "",
+          "type_element": "buffer",
+          "taille": 8,
+          "valeur": "DEADBEEFDEADBEEF",
+          "dependance": []
+        },
+        {
+          "nom": "contenu2",
+          "type_element": "reference",
+          "nom_reference": "champ_externe"
+        },
+        {
+          "nom": "contenu3",
+          "description": "",
+          "type_element": "buffer",
+          "taille": 4,
+          "valeur": "CAFECAFE",
+          "dependance": []
+        },
+        {
+          "nom": "contenu4",
+          "type_element": "reference",
+          "nom_reference": "bitfield1"
+        }
+      ]
+    },
+    {
+      "nom": "crc",
+      "description": "",
+      "type_element": "buffer",
+      "taille": 4,
+      "valeur": "ACABACAB",
+      "dependance": ["exemple.contenu.contenu1","exemple.contenu.contenu2"]
+    }
+  ]
+}
