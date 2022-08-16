@@ -13,6 +13,7 @@ class C_FieldFactory(C_DonneesFactory):
         description = extrait_attribut(nom_attribut="description", type_attribut=str, contenu=kwargs)
         valeur = int(extrait_attribut(nom_attribut="valeur", type_attribut=str, contenu=kwargs), 2)
         taille = extrait_attribut(nom_attribut="taille", type_attribut=int, contenu=kwargs)
+        offset = extrait_attribut(nom_attribut="offset", type_attribut=int, contenu=kwargs)
         input_dependances = extrait_attribut(nom_attribut="dependance", type_attribut=list, contenu=kwargs)
 
         # Dependance
@@ -20,4 +21,4 @@ class C_FieldFactory(C_DonneesFactory):
         for dependance in input_dependances:
             dependances.append(self.librairie.getFactory(E_Format.from_str("dependance")).creerDonnees(dependance))
 
-        return C_Field(nom=nom, description=description, dependance=dependances, taille=taille, offset=taille, valeur=valeur)
+        return C_Field(nom=nom, description=description, dependance=dependances, taille=taille, offset=offset, valeur=valeur)

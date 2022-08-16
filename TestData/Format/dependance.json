@@ -1,8 +1,13 @@
 {
   "nom": "champ_externe",
   "description": "",
-  "type_element": "buffer",
+  "type_element": "enumerate",
   "taille": 4,
-  "valeur": "ACABACAB",
+  "enum": {
+    "val1": "ACABACAB",
+    "val2": "DEADBEEF",
+    "val3": "BADBAFFE"
+  },
+  "defaut": "val3",
   "dependance": []
 }

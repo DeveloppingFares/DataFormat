@@ -17,7 +17,8 @@ class C_BitfieldFactory(C_DonneesFactory):
         # Elements
         elements = list()
         for element in input_elements:
-            elements.append(self.librairie.getFactory(E_Format.from_str(element.get("type_element"))).creerDonnees(**element))
+            type_element = extrait_attribut(nom_attribut="type_element", type_attribut=str, contenu=element)
+            elements.append(self.librairie.getFactory(E_Format.from_str(type_element)).creerDonnees(**element))
 
         # Dependance
         dependances = list()

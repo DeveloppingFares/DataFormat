@@ -1,13 +1,15 @@
 import os
+import random
+from enum import Enum
 from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Element import C_Element
 
 
 class C_Enumerate(C_observable, C_Element):
-    def __init__(self, nom: str, description: str, dependance: list, taille: int, valeur: bytearray):
-        if len(valeur) != taille:
-            raise ValueError(f"Taille de la valeur d'initialisation de l'enumerate {nom} incohérente")
-        self._valeur: bytearray = valeur
+    def __init__(self, nom: str, description: str, dependance: list, taille: int, valeurs: Enum, defaut: str):
+        self._valeurs: Enum = valeurs
+        self._defaut: str = defaut
+        self._valeur: bytearray = self.get_enum_from_str(self._defaut)
 
         # Depuis Observable
         super().__init__()
@@ -19,6 +21,18 @@ class C_Enumerate(C_observable, C_Element):
 
         # Depuis Element
         self._taille: int = taille
+
+    def get_enum_from_str(self, nom_enum: str) -> bytearray:
+        for nom, valeur in self._valeurs.__members__.items():
+            if nom_enum == nom:
+                return valeur.value
+        raise KeyError(f"L'enumere ne contient pas de membre appelé {nom_enum}")
+
+    def is_value_in_enum(self, value: bytearray) -> bool:
+        for nom, valeur in self._valeurs.__members__.items():
+            if value == valeur.value:
+                return True
+        return False
 
     # ==================================================================================================================
     # Depuis Donnees
@@ -37,7 +51,7 @@ class C_Enumerate(C_observable, C_Element):
 
     @property
     def random(self) -> bytearray:
-        return bytearray(os.urandom(self.taille))
+        return random.choice(list(self._valeurs.__members__.values())).value
 
     # ==================================================================================================================
     # Depuis Observer
@@ -58,8 +72,8 @@ class C_Enumerate(C_observable, C_Element):
 
     @valeur.setter
     def valeur(self, v: bytearray):
-        if len(v) != self.taille:
-            raise ValueError(f"Taille de la valeur d'initialisation du buffer {self.nom} incohérente")
+        if not self.is_value_in_enum(v):
+            raise ValueError(f"Valeur d'initialisation {v.hex()} de l'enumere {self.nom} incohérente")
         self._valeur = v
         self.notify()
 
