@@ -6,7 +6,8 @@ class C_observable(object):
         self._observers = list()
 
     def add_observer(self, observer: C_observer) -> None:
-        self._observers.append(observer)
+        if observer not in self._observers:
+            self._observers.append(observer)
 
     def remove_observer(self, observer: C_observer) -> None:
         self._observers.remove(observer)

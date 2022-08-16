@@ -9,6 +9,8 @@ class C_DependanceFactory(C_DonneesFactory):
     def creerDonnees(self, nom_dependance: str):
         if nom_dependance is None:
             raise KeyError
+        elif type(nom_dependance) != str:
+            raise ValueError
         return C_Dependance(factory=self, nom_dependance=nom_dependance)
 
     def cherche_dependance(self, nom_dependance: str):

@@ -1,14 +1,8 @@
-import json
 import os
-from enum import Enum
+from Source.Data.Utilitaires.M_Constantes import E_Format
 from Source.Data.Interfaces.M_Donnees import C_Donnees
-from Source.Data.Format.M_Package import C_Package
-from Source.Data.Format.M_Bitfield import C_Bitfield
-from Source.Data.Format.M_Enumerate import C_Enumerate
-from Source.Data.Format.M_Field import C_Field
-from Source.Data.Format.M_Processed import C_Processed
-from Source.Data.Format.M_Buffer import C_Buffer
-from Source.Data.Format.M_Range import C_Range
+from Source.Data.Factories.M_PackageFactory import C_PackageFactory
+from Source.Data.Factories.M_BitfieldFactory import C_BitfieldFactory
 from Source.Data.Factories.M_EnumerateFactory import C_EnumerateFactory
 from Source.Data.Factories.M_FieldFactory import C_FieldFactory
 from Source.Data.Factories.M_ProcessedFactory import C_ProcessedFactory
@@ -16,20 +10,10 @@ from Source.Data.Factories.M_BufferFactory import C_BufferFactory
 from Source.Data.Factories.M_RangeFactory import C_RangeFactory
 from Source.Data.Factories.M_ReferenceFactory import C_ReferenceFactory
 from Source.Data.Factories.M_DependanceFactory import C_DependanceFactory
+from Source.Data.Importer.M_FileImporter import C_FileImporter, C_ResultatImport
 
 
 class C_Librairie(object):
-    class type_donnees(Enum):
-        bitfield = "bitfield"
-        buffer = "buffer"
-        enumerate = "enumerate"
-        field = "field"
-        package = "package"
-        processed = "processed"
-        range = "range"
-        reference = "reference"
-        dependance = "dependance"
-
     def __init__(self):
         pass
 
@@ -38,49 +22,33 @@ class C_Librairie(object):
             raise FileNotFoundError
         for root, dirs, files in os.walk(dirpath):
             for f in files:
-                self.importJSON(os.path.join(root, f))
+                self.factory(C_FileImporter(os.path.join(root, f)).import_file())
+        self.ajout_observer()
 
-    def importJSON(self, filepath: str) -> C_Package | C_Bitfield | C_Enumerate | C_Field | C_Processed | C_Buffer | C_Range:
-        if not os.path.isfile(filepath):
-            raise FileNotFoundError
-        with open(filepath) as f:
-            dict_json = json.load(f)
-        return self.factory(**dict_json)
-
-    def factory(self, **kwargs) -> C_Package | C_Bitfield | C_Enumerate | C_Field | C_Processed | C_Buffer | C_Range:
-        nom_element = kwargs.get("nom")
-        if nom_element is None:
-            raise KeyError
-        type_element = kwargs.get("type_element")
-        if type_element is None:
-            raise KeyError
-
-        if hasattr(self, nom_element):
-            raise AttributeError
+    def factory(self, resultat_import: C_ResultatImport):
+        if hasattr(self, resultat_import.nom):
+            raise AttributeError(f"La librairie contient déjà une donnée appelée {resultat_import.nom}")
         else:
-            setattr(self, nom_element, self.getFactory(type_element).creerDonnees(**kwargs))
-        return self.__getattribute__(nom_element)
+            setattr(self, resultat_import.nom, self.getFactory(resultat_import.format).creerDonnees(**resultat_import.contenu))
 
-    def getFactory(self, type_element: str):
-        if type_element == C_Librairie.type_donnees.package.value:
-            from Source.Data.Factories.M_PackageFactory import C_PackageFactory
+    def getFactory(self, format_element: str):
+        if format_element == E_Format.package:
             return C_PackageFactory(self)
-        elif type_element == C_Librairie.type_donnees.bitfield.value:
-            from Source.Data.Factories.M_BitfieldFactory import C_BitfieldFactory
+        elif format_element == E_Format.bitfield:
             return C_BitfieldFactory(self)
-        elif type_element == C_Librairie.type_donnees.buffer.value:
+        elif format_element == E_Format.buffer:
             return C_BufferFactory(self)
-        elif type_element == C_Librairie.type_donnees.enumerate.value:
+        elif format_element == E_Format.enumerate:
             return C_EnumerateFactory(self)
-        elif type_element == C_Librairie.type_donnees.processed.value:
+        elif format_element == E_Format.processed:
             return C_ProcessedFactory(self)
-        elif type_element == C_Librairie.type_donnees.range.value:
+        elif format_element == E_Format.range:
             return C_RangeFactory(self)
-        elif type_element == C_Librairie.type_donnees.field.value:
+        elif format_element == E_Format.field:
             return C_FieldFactory(self)
-        elif type_element == C_Librairie.type_donnees.reference.value:
+        elif format_element == E_Format.reference:
             return C_ReferenceFactory(self)
-        elif type_element == C_Librairie.type_donnees.dependance.value:
+        elif format_element == E_Format.dependance:
             return C_DependanceFactory(self)
         else:
             raise ValueError
