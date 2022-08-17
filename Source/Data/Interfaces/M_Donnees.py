@@ -39,7 +39,7 @@ class C_Donnees(C_observer, metaclass=ABCMeta):
         raise NotImplementedError
 
     @abstractmethod
-    def ajout_observer(self, observer: C_observer):
+    def ajout_observer(self):
         raise NotImplementedError
 
     @classmethod

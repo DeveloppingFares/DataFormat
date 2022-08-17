@@ -65,10 +65,11 @@
     {
       "nom": "crc",
       "description": "",
-      "type_element": "buffer",
+      "type_element": "processed",
       "taille": 4,
-      "valeur": "ACABACAB",
-      "dependance": ["exemple.contenu.contenu1","exemple.contenu.contenu2"]
+      "processor": "crc_A_32",
+      "entrant": ["exemple.contenu"],
+      "dependance": ["exemple.contenu.contenu1","exemple.contenu.contenu2","exemple.contenu.contenu3","exemple.contenu.contenu4"]
     }
   ]
 }

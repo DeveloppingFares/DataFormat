@@ -11,11 +11,12 @@ from Source.Data.Factories.M_RangeFactory import C_RangeFactory
 from Source.Data.Factories.M_ReferenceFactory import C_ReferenceFactory
 from Source.Data.Factories.M_DependanceFactory import C_DependanceFactory
 from Source.Data.Importer.M_FileImporter import C_FileImporter, C_ResultatImport
+from Source.Data.M_LibrairieFormatter import C_LibrairieFormatter
 
 
 class C_Librairie(object):
     def __init__(self):
-        pass
+        self._formatters = C_LibrairieFormatter()
 
     def importDirectory(self, dirpath: str):
         if not os.path.isdir(dirpath):
@@ -67,3 +68,6 @@ class C_Librairie(object):
         for attr in self.__dict__.values():
             if issubclass(type(attr), C_Donnees):
                 attr.ajout_observer()
+
+    def get_formatter(self, nom: str):
+        return self._formatters.get_formatter(nom)

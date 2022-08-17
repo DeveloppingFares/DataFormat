@@ -4,8 +4,9 @@ from Source.Data.Interfaces.M_Element import C_Element
 
 
 class C_Processed(C_observable, C_Element):
-    def __init__(self, nom: str, description: str, dependance: list, taille: int, processor: callable):
-        self._processor = processor
+    def __init__(self, nom: str, description: str, dependance: list, taille: int, processor: callable, entrants: list):
+        self._processor: callable = processor
+        self._entrants: list = entrants
 
         # Depuis Observable
         super().__init__()
@@ -45,15 +46,19 @@ class C_Processed(C_observable, C_Element):
             dependance.ajout_observer(self)
 
     def update(self, **kwargs) -> None:
-        raise NotImplementedError
+        print(f"Ici {self.nom} qui dit: Salut les mioches!")
 
     # ==================================================================================================================
     # Depuis Element
     # ==================================================================================================================
     @property
     def valeur(self) -> bytearray:
+        entrants = bytearray()
+        for entrant in self._entrants:
+            entrants += entrant.valeur
+        processed = self._processor(entrants)
         self.notify()
-        return self._processor()
+        return processed
 
     @property
     def taille(self) -> int:
