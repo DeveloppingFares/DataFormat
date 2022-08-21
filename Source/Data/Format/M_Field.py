@@ -72,7 +72,7 @@ class C_Field(C_observable, C_Donnees):
         self.valeur = self.random
 
     def __str__(self):
-        return f"""{self.nom}: {self.valeur:b}
+        return f"""{self.nom}: {self.valeur:0{self.taille}b}
 \tType: {str(type(self))}
 \tDescription: {self.description}
 \tTaille: {str(self.taille)} bits
