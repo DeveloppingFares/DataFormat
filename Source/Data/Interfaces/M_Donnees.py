@@ -35,7 +35,7 @@ class C_Donnees(C_observer, metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def random(self) -> int | bytearray:
+    def random(self):
         raise NotImplementedError
 
     @abstractmethod

@@ -1,5 +1,6 @@
 from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Donnees import C_Donnees
+from random import randint
 
 
 class C_Field(C_observable, C_Donnees):
@@ -55,7 +56,7 @@ class C_Field(C_observable, C_Donnees):
 
     @property
     def random(self) -> int:
-        raise NotImplementedError
+        return randint(0, (1 << self._taille) - 1)
 
     # ==================================================================================================================
     # Depuis Observer
@@ -66,3 +67,13 @@ class C_Field(C_observable, C_Donnees):
 
     def update(self, **kwargs) -> None:
         raise NotImplementedError
+
+    def randomize(self):
+        self.valeur = self.random
+
+    def __str__(self):
+        return f"""{self.nom}: {self.valeur:b}
+\tType: {str(type(self))}
+\tDescription: {self.description}
+\tTaille: {str(self.taille)} bits
+"""

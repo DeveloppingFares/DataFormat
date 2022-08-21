@@ -14,11 +14,6 @@ class C_Reference(C_observable, C_Element):
 
         # Depuis Donnees
         self._nom: str = nom
-        self._description = None  # Inutilisé
-        self._dependance = None  # Inutilisé
-
-        # Depuis Element
-        self._taille = None  # Inutilisé
 
     def chargement_reference(self):
         if self._reference is None:
@@ -78,3 +73,7 @@ class C_Reference(C_observable, C_Element):
     def taille(self) -> int:
         self.chargement_reference()
         return self._reference.taille
+
+    def __str__(self):
+        self.chargement_reference()
+        return f"{self.nom} reference vers {str(self._reference)}"

@@ -60,7 +60,7 @@ class C_Range(C_observable, C_Element):
         return bytearray(self._valeur.to_bytes(self.taille, 'big'))
 
     @valeur.setter
-    def valeur(self, v: int | bytearray):
+    def valeur(self, v):
         if isinstance(v, bytearray):
             if len(v) != self.taille:
                 raise ValueError(f"Taille de la valeur d'initialisation du range {self.nom} incohérente")
