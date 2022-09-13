@@ -15,7 +15,6 @@
           "description": "",
           "type_element": "buffer",
           "taille": 4,
-          "valeur": "ACABACAB",
           "dependance": []
         },
         {
@@ -23,7 +22,6 @@
           "description": "",
           "type_element": "buffer",
           "taille": 8,
-          "valeur": "BADBAFFEBADBAFFE",
           "dependance": []
         }
       ]
@@ -39,7 +37,6 @@
           "description": "",
           "type_element": "buffer",
           "taille": 8,
-          "valeur": "DEADBEEFDEADBEEF",
           "dependance": []
         },
         {
@@ -52,7 +49,6 @@
           "description": "",
           "type_element": "buffer",
           "taille": 4,
-          "valeur": "CAFECAFE",
           "dependance": []
         },
         {

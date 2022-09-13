@@ -1,6 +1,6 @@
 from Source.Data.Interfaces.M_DonneesFactory import C_DonneesFactory
 from Source.Data.Format.M_Buffer import C_Buffer
-from Source.Data.Utilitaires.M_Utitilaires import extrait_attribut
+from Source.Data.Utilitaires.M_Utilitaires import extrait_attribut
 from Source.Data.Utilitaires.M_Constantes import E_Format
 
 
@@ -11,7 +11,8 @@ class C_BufferFactory(C_DonneesFactory):
     def creerDonnees(self, **kwargs) -> C_Buffer:
         nom = extrait_attribut(nom_attribut="nom", type_attribut=str, contenu=kwargs)
         description = extrait_attribut(nom_attribut="description", type_attribut=str, contenu=kwargs)
-        valeur = bytearray.fromhex(extrait_attribut(nom_attribut="valeur", type_attribut=str, contenu=kwargs))
+        valeur = extrait_attribut(nom_attribut="valeur", type_attribut=str, contenu=kwargs, obligatoire=False)
+        valeur = bytearray.fromhex(valeur) if valeur is not None else valeur
         taille = extrait_attribut(nom_attribut="taille", type_attribut=int, contenu=kwargs)
         input_dependances = extrait_attribut(nom_attribut="dependance", type_attribut=list, contenu=kwargs)
 

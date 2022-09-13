@@ -1,6 +1,6 @@
 from Source.Data.Interfaces.M_DonneesFactory import C_DonneesFactory
 from Source.Data.Format.M_Reference import C_Reference
-from Source.Data.Utilitaires.M_Utitilaires import extrait_attribut
+from Source.Data.Utilitaires.M_Utilitaires import extrait_attribut
 
 
 class C_ReferenceFactory(C_DonneesFactory):

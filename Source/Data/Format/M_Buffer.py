@@ -1,14 +1,11 @@
 import os
 from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Element import C_Element
+from Source.Data.Format import ErreurValeurHorsLimite
 
 
 class C_Buffer(C_observable, C_Element):
     def __init__(self, nom: str, description: str, dependance: list, taille: int, valeur: bytearray):
-        if len(valeur) != taille:
-            raise ValueError(f"Taille de la valeur d'initialisation du buffer {nom} incohérente")
-        self._valeur: bytearray = valeur
-
         # Depuis Observable
         super().__init__()
 
@@ -19,6 +16,9 @@ class C_Buffer(C_observable, C_Element):
 
         # Depuis Element
         self._taille: int = taille
+
+        # Specifique
+        self._valeur: bytearray = valeur if valeur is not None else self.random
 
     # ==================================================================================================================
     # Depuis Donnees
@@ -59,7 +59,7 @@ class C_Buffer(C_observable, C_Element):
     @valeur.setter
     def valeur(self, v: bytearray):
         if len(v) != self.taille:
-            raise ValueError(f"Taille de la valeur d'initialisation du buffer {self.nom} incohérente")
+            raise ErreurValeurHorsLimite(nom_attribut=self.nom, taille_attendue=self.taille, taille_fournie=len(v))
         self._valeur = v
         self.notify()
 

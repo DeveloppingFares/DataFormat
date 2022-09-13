@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from Source.Data.Interfaces.M_Importer import C_Importer, C_ResultatImport
-from Source.Data.Utilitaires.M_Utitilaires import extrait_attribut
+from Source.Data.Utilitaires.M_Utilitaires import extrait_attribut
 
 
 class C_JsonImporter(C_Importer):

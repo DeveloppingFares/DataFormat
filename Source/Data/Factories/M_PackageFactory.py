@@ -1,7 +1,7 @@
 from Source.Data.Interfaces.M_DonneesFactory import C_DonneesFactory
 from Source.Data.Format.M_Package import C_Package
 from Source.Data.Utilitaires.M_Constantes import E_Format
-from Source.Data.Utilitaires.M_Utitilaires import extrait_attribut
+from Source.Data.Utilitaires.M_Utilitaires import extrait_attribut
 
 
 class C_PackageFactory(C_DonneesFactory):

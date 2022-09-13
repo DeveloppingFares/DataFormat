@@ -5,10 +5,10 @@ from random import randint
 
 class C_Field(C_observable, C_Donnees):
     def __init__(self, nom: str, description: str, dependance: list, taille: int, offset: int, valeur: int):
-        self._valeur: int = valeur
         self._offset: int = offset
         self._taille: int = taille
         self._masque: int = (0xFFFFFFFF >> (32 - self._taille)) << self._offset
+        self._valeur: int = valeur if valeur is not None else self.random
 
         # Depuis Observable
         super().__init__()

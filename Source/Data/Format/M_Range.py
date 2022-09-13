@@ -7,10 +7,8 @@ class C_Range(C_observable, C_Element):
     def __init__(self, nom: str, description: str, dependance: list, taille: int, valeur: int, valeur_min: int, valeur_max: int):
         self._valeur_min: int = valeur_min
         self._valeur_max: int = valeur_max
-        if self._valeur_min <= valeur <= self._valeur_max:
-            self._valeur = valeur
-        else:
-            raise ValueError(f"Valeur hors des limites définies pour le range {self.nom}")
+        self._valeur: int = int()
+        self.valeur = valeur if valeur is not None else self.random
 
         # Depuis Observable
         super().__init__()

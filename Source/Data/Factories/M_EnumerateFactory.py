@@ -1,7 +1,7 @@
 from enum import Enum
 from Source.Data.Interfaces.M_DonneesFactory import C_DonneesFactory
 from Source.Data.Format.M_Enumerate import C_Enumerate
-from Source.Data.Utilitaires.M_Utitilaires import extrait_attribut
+from Source.Data.Utilitaires.M_Utilitaires import extrait_attribut
 from Source.Data.Utilitaires.M_Constantes import E_Format
 
 

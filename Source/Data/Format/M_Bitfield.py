@@ -1,6 +1,7 @@
 import os
 from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Bloc import C_Bloc
+from Source.Data.Format import ErreurNomAttributUtilise, ErreurAucunAttribut
 from Source.Data.Format.M_Field import C_Field
 
 
@@ -20,7 +21,7 @@ class C_Bitfield(C_Bloc, C_observable):
             if not hasattr(self, element.nom):
                 setattr(self, element.nom, element)
             else:
-                raise KeyError(f"Le bitfield {self.nom} contient deja un attribut {element.nom}")
+                raise ErreurNomAttributUtilise(type_element=self.__class__.__name__, nom_element=self.nom, nom_attribut=element.nom)
 
     # ==================================================================================================================
     # Depuis Donnees
@@ -66,7 +67,7 @@ class C_Bitfield(C_Bloc, C_observable):
                     v += attr.valeur << attr.offset
             return bytearray(v.to_bytes(self.taille, 'big'))
         else:
-            raise AttributeError(f"Bitfield {self.nom} ne contient aucun élément")
+            raise ErreurAucunAttribut(type_element=self.__class__.__name__, nom_element=self.nom)
 
     @valeur.setter
     def valeur(self, v: bytearray):
@@ -77,7 +78,7 @@ class C_Bitfield(C_Bloc, C_observable):
                 if isinstance(attr, C_Field):
                     attr.valeur = (int.from_bytes(v, 'big') & attr.masque) >> attr.offset
         else:
-            raise AttributeError(f"Bitfield {self.nom} ne contient aucun élément")
+            raise ErreurAucunAttribut(type_element=self.__class__.__name__, nom_element=self.nom)
         self.notify()
 
     @property
@@ -88,7 +89,7 @@ class C_Bitfield(C_Bloc, C_observable):
                 if isinstance(attr, C_Field):
                     t += attr.taille
         else:
-            raise AttributeError(f"Bitfield {self.nom} ne contient aucun élément")
+            raise ErreurAucunAttribut(type_element=self.__class__.__name__, nom_element=self.nom)
         if t % 8 != 0:
             raise AttributeError(f"Bitfield de taille {t} non aligné sur des octets")
         if t // 8 > 4:
