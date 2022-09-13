@@ -7,7 +7,7 @@ class C_Reference(C_observable, C_Element):
     def __init__(self, factory, nom: str, nom_reference: str, reference: C_Element = None):
         self._reference: C_Element = reference
         self._nom_reference: str = nom_reference
-        self.factory = factory
+        self.refence_factory = factory
 
         # Depuis Observable
         super().__init__()
@@ -17,7 +17,7 @@ class C_Reference(C_observable, C_Element):
 
     def chargement_reference(self):
         if self._reference is None:
-            self._reference = self.factory.cherche_reference(nom_reference=self._nom_reference)
+            self._reference = self.refence_factory.cherche_reference(nom_reference=self._nom_reference)
             if self._reference is None:
                 raise AttributeError(f"Attribut {self._nom_reference} introuvable dans la librairie")
             if not issubclass(type(self._reference), C_Element) and not issubclass(type(self._reference), C_Bloc):
@@ -44,6 +44,14 @@ class C_Reference(C_observable, C_Element):
     def random(self) -> bytearray:
         self.chargement_reference()
         return self._reference.random
+
+    def factory(self):
+        nouvelle_instance = C_Reference(factory=self.refence_factory,
+                                        nom=self._nom,
+                                        nom_reference=self._nom_reference,
+                                        reference=None)
+        nouvelle_instance.ajout_observer()
+        return nouvelle_instance
 
     # ==================================================================================================================
     # Depuis Observer

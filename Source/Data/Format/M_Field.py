@@ -58,6 +58,16 @@ class C_Field(C_observable, C_Donnees):
     def random(self) -> int:
         return randint(0, (1 << self._taille) - 1)
 
+    def factory(self):
+        nouvelle_instance = C_Field(nom=self._nom,
+                                    description=self._description,
+                                    dependance=list(map(lambda x: x.factory(), self._dependance)),
+                                    taille=self._taille,
+                                    offset=self._offset,
+                                    valeur=None)
+        nouvelle_instance.ajout_observer()
+        return nouvelle_instance
+
     # ==================================================================================================================
     # Depuis Observer
     # ==================================================================================================================

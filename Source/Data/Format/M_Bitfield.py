@@ -42,6 +42,14 @@ class C_Bitfield(C_Bloc, C_observable):
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
 
+    def factory(self):
+        nouvelle_instance = C_Bitfield(nom=self._nom,
+                                       description=self._description,
+                                       dependance=list(map(lambda x: x.factory(), self._dependance)),
+                                       elements=list(map(lambda x: x.factory(), self._elements)))
+        nouvelle_instance.ajout_observer()
+        return nouvelle_instance
+
     # ==================================================================================================================
     # Depuis Observer
     # ==================================================================================================================

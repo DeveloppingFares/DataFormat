@@ -40,6 +40,17 @@ class C_Range(C_observable, C_Element):
     def random(self) -> bytearray:
         return bytearray(randint(self._valeur_min, self._valeur_max).to_bytes(self.taille, 'big'))
 
+    def factory(self):
+        nouvelle_instance = C_Range(nom=self._nom,
+                                    description=self._description,
+                                    dependance=list(map(lambda x: x.factory(), self._dependance)),
+                                    taille=self._taille,
+                                    valeur=None,
+                                    valeur_min=self._valeur_min,
+                                    valeur_max=self._valeur_max)
+        nouvelle_instance.ajout_observer()
+        return nouvelle_instance
+
     # ==================================================================================================================
     # Depuis Observer
     # ==================================================================================================================

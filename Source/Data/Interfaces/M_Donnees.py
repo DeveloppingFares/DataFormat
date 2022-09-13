@@ -42,6 +42,10 @@ class C_Donnees(C_observer, metaclass=ABCMeta):
     def ajout_observer(self):
         raise NotImplementedError
 
+    @abstractmethod
+    def factory(self):
+        raise NotImplementedError
+
     @classmethod
     def __subclasshook__(cls, c):
         if "nom" in vars(c) and "description" in vars(c) and "dependance" in c.__dict__ and "ajout_observer" in vars(c):

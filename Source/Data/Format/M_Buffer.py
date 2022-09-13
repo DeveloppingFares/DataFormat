@@ -39,6 +39,15 @@ class C_Buffer(C_observable, C_Element):
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
 
+    def factory(self):
+        nouvelle_instance = C_Buffer(nom=self._nom,
+                                     description=self._description,
+                                     dependance=list(map(lambda x: x.factory(), self._dependance)),
+                                     taille=self._taille,
+                                     valeur=None)
+        nouvelle_instance.ajout_observer()
+        return nouvelle_instance
+
     # ==================================================================================================================
     # Depuis Observer
     # ==================================================================================================================

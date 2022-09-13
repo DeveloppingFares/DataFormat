@@ -19,3 +19,6 @@ if __name__ == '__main__':
     print(str(librairie.exemple))
     print(str(librairie.champ_externe))
     print(f"Temps de traitement: {str(end-start)}")
+
+    new_instance = librairie.exemple.factory()
+    print(str(new_instance))

@@ -53,6 +53,16 @@ class C_Enumerate(C_observable, C_Element):
     def random(self) -> bytearray:
         return random.choice(list(self._valeurs.__members__.values())).value
 
+    def factory(self):
+        nouvelle_instance = C_Enumerate(nom=self._nom,
+                                        description=self._description,
+                                        dependance=list(map(lambda x: x.factory(), self._dependance)),
+                                        taille=self._taille,
+                                        valeurs=self._valeurs,
+                                        defaut=self._defaut)
+        nouvelle_instance.ajout_observer()
+        return nouvelle_instance
+
     # ==================================================================================================================
     # Depuis Observer
     # ==================================================================================================================
