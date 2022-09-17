@@ -6,3 +6,7 @@ class C_DonneesFactory(metaclass=ABCMeta):
     @abstractmethod
     def creerDonnees(self, **kwargs) -> C_Donnees:
         raise NotImplementedError
+
+    @abstractmethod
+    def creerDonneesDepuisTemplate(self, template: C_Donnees) -> C_Donnees:
+        raise NotImplementedError

@@ -17,11 +17,8 @@ class C_Bitfield(C_Bloc, C_observable):
 
         # Depuis Bloc
         self._elements: list = elements
-        for element in elements:
-            if not hasattr(self, element.nom):
-                setattr(self, element.nom, element)
-            else:
-                raise ErreurNomAttributUtilise(type_element=self.__class__.__name__, nom_element=self.nom, nom_attribut=element.nom)
+        if len(self._elements):
+            self.ajout_elements(self._elements)
 
     # ==================================================================================================================
     # Depuis Donnees
@@ -35,6 +32,10 @@ class C_Bitfield(C_Bloc, C_observable):
         return self._description
 
     @property
+    def type_element(self) -> str:
+        return 'bitfield'
+
+    @property
     def dependance(self) -> list:
         return self._dependance
 
@@ -42,13 +43,16 @@ class C_Bitfield(C_Bloc, C_observable):
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
 
-    def factory(self):
-        nouvelle_instance = C_Bitfield(nom=self._nom,
-                                       description=self._description,
-                                       dependance=list(map(lambda x: x.factory(), self._dependance)),
-                                       elements=list(map(lambda x: x.factory(), self._elements)))
-        nouvelle_instance.ajout_observer()
-        return nouvelle_instance
+    def ajout_elements(self, elements: list):
+        self._elements = elements
+        for element in self._elements:
+            if not hasattr(self, element.nom):
+                setattr(self, element.nom, element)
+            else:
+                raise ErreurNomAttributUtilise(type_element=self.__class__.__name__, nom_element=self.nom, nom_attribut=element.nom)
+
+    def ajout_dependances(self, dependances: list):
+        self._dependance = dependances
 
     # ==================================================================================================================
     # Depuis Observer
@@ -103,3 +107,7 @@ class C_Bitfield(C_Bloc, C_observable):
         if t // 8 > 4:
             raise AttributeError(f"Bitfield de taille {t} supérieur à 4 octets")
         return t // 8
+
+    @property
+    def elements(self) -> list:
+        return self._elements

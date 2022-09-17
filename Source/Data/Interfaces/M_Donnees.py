@@ -18,6 +18,11 @@ class C_Donnees(C_observer, metaclass=ABCMeta):
     def description(self) -> str:
         raise NotImplementedError
 
+    @property
+    @abstractmethod
+    def type_element(self) -> str:
+        raise NotImplementedError
+
     @description.setter
     @abstractmethod
     def description(self, v: str):
@@ -40,10 +45,6 @@ class C_Donnees(C_observer, metaclass=ABCMeta):
 
     @abstractmethod
     def ajout_observer(self):
-        raise NotImplementedError
-
-    @abstractmethod
-    def factory(self):
         raise NotImplementedError
 
     @classmethod

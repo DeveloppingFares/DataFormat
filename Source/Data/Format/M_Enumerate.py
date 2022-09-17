@@ -34,6 +34,14 @@ class C_Enumerate(C_observable, C_Element):
                 return True
         return False
 
+    @property
+    def valeurs(self) -> Enum:
+        return self._valeurs
+
+    @property
+    def defaut(self) -> str:
+        return self._defaut
+
     # ==================================================================================================================
     # Depuis Donnees
     # ==================================================================================================================
@@ -46,6 +54,10 @@ class C_Enumerate(C_observable, C_Element):
         return self._description
 
     @property
+    def type_element(self) -> str:
+        return 'enumerate'
+
+    @property
     def dependance(self) -> list:
         return self._dependance
 
@@ -53,15 +65,8 @@ class C_Enumerate(C_observable, C_Element):
     def random(self) -> bytearray:
         return random.choice(list(self._valeurs.__members__.values())).value
 
-    def factory(self):
-        nouvelle_instance = C_Enumerate(nom=self._nom,
-                                        description=self._description,
-                                        dependance=list(map(lambda x: x.factory(), self._dependance)),
-                                        taille=self._taille,
-                                        valeurs=self._valeurs,
-                                        defaut=self._defaut)
-        nouvelle_instance.ajout_observer()
-        return nouvelle_instance
+    def ajout_dependances(self, dependances: list):
+        self._dependance = dependances
 
     # ==================================================================================================================
     # Depuis Observer

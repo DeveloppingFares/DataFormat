@@ -32,6 +32,10 @@ class C_Buffer(C_observable, C_Element):
         return self._description
 
     @property
+    def type_element(self) -> str:
+        return 'buffer'
+
+    @property
     def dependance(self) -> list:
         return self._dependance
 
@@ -39,14 +43,8 @@ class C_Buffer(C_observable, C_Element):
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
 
-    def factory(self):
-        nouvelle_instance = C_Buffer(nom=self._nom,
-                                     description=self._description,
-                                     dependance=list(map(lambda x: x.factory(), self._dependance)),
-                                     taille=self._taille,
-                                     valeur=None)
-        nouvelle_instance.ajout_observer()
-        return nouvelle_instance
+    def ajout_dependances(self, dependances: list):
+        self._dependance = dependances
 
     # ==================================================================================================================
     # Depuis Observer

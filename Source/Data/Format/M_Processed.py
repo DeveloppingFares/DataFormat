@@ -19,6 +19,10 @@ class C_Processed(C_observable, C_Element):
         # Depuis Element
         self._taille: int = taille
 
+    @property
+    def processor(self) -> str:
+        return self._processor
+
     # ==================================================================================================================
     # Depuis Donnees
     # ==================================================================================================================
@@ -31,22 +35,26 @@ class C_Processed(C_observable, C_Element):
         return self._description
 
     @property
+    def type_element(self) -> str:
+        return 'processed'
+
+    @property
     def dependance(self) -> list:
         return self._dependance
+
+    @property
+    def entrants(self) -> list:
+        return self._entrants
 
     @property
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
 
-    def factory(self):
-        nouvelle_instance = C_Processed(nom=self._nom,
-                                        description=self._description,
-                                        dependance=list(map(lambda x: x.factory(), self._dependance)),
-                                        taille=self._taille,
-                                        processor=self._processor,
-                                        entrants=self._entrants)
-        nouvelle_instance.ajout_observer()
-        return nouvelle_instance
+    def ajout_dependances(self, dependances: list):
+        self._dependance = dependances
+
+    def ajout_entrants(self, entrants: list):
+        self._entrants = entrants
 
     # ==================================================================================================================
     # Depuis Observer

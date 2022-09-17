@@ -16,11 +16,13 @@ class C_Dependance:
             if not isinstance(self._dependance, C_observable):
                 raise TypeError(f"L'attribut {self._nom_dependance} n'est pas une Donnees")
 
-    def factory(self):
-        nouvelle_instance = C_Dependance(factory=self.dependance_factory,
-                                         nom_dependance=self._nom_dependance,
-                                         dependance=None)
-        return nouvelle_instance
+    @property
+    def nom_dependance(self) -> str:
+        return self._nom_dependance
+
+    @property
+    def type_element(self) -> str:
+        return 'dependance'
 
     # ==================================================================================================================
     # Depuis Observable

@@ -21,6 +21,14 @@ class C_Range(C_observable, C_Element):
         # Depuis Element
         self._taille: int = taille
 
+    @property
+    def valeur_min(self) -> int:
+        return self._valeur_min
+
+    @property
+    def valeur_max(self) -> int:
+        return self._valeur_max
+
     # ==================================================================================================================
     # Depuis Donnees
     # ==================================================================================================================
@@ -33,6 +41,10 @@ class C_Range(C_observable, C_Element):
         return self._description
 
     @property
+    def type_element(self) -> str:
+        return 'range'
+
+    @property
     def dependance(self) -> list:
         return self._dependance
 
@@ -40,16 +52,8 @@ class C_Range(C_observable, C_Element):
     def random(self) -> bytearray:
         return bytearray(randint(self._valeur_min, self._valeur_max).to_bytes(self.taille, 'big'))
 
-    def factory(self):
-        nouvelle_instance = C_Range(nom=self._nom,
-                                    description=self._description,
-                                    dependance=list(map(lambda x: x.factory(), self._dependance)),
-                                    taille=self._taille,
-                                    valeur=None,
-                                    valeur_min=self._valeur_min,
-                                    valeur_max=self._valeur_max)
-        nouvelle_instance.ajout_observer()
-        return nouvelle_instance
+    def ajout_dependances(self, dependances: list):
+        self._dependance = dependances
 
     # ==================================================================================================================
     # Depuis Observer

@@ -42,7 +42,7 @@
         {
           "nom": "contenu2",
           "type_element": "reference",
-          "nom_reference": "champ_externe"
+          "nom_reference": "statique.champ_externe"
         },
         {
           "nom": "contenu3",
@@ -54,7 +54,7 @@
         {
           "nom": "contenu4",
           "type_element": "reference",
-          "nom_reference": "bitfield1"
+          "nom_reference": "statique.bitfield1"
         }
       ]
     },
@@ -64,8 +64,8 @@
       "type_element": "processed",
       "taille": 4,
       "processor": "crc_A_32",
-      "entrant": ["exemple.contenu"],
-      "dependance": ["exemple.contenu.contenu1","exemple.contenu.contenu2","exemple.contenu.contenu3","exemple.contenu.contenu4"]
+      "entrant": ["volatile.contenu"],
+      "dependance": ["volatile.contenu.contenu1","volatile.contenu.contenu2","volatile.contenu.contenu3","volatile.contenu.contenu4"]
     }
   ]
 }

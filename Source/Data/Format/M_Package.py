@@ -1,4 +1,5 @@
 import os
+from Source.Data.Format import ErreurNomAttributUtilise
 from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Bloc import C_Bloc
 from Source.Data.Interfaces.M_Element import C_Element
@@ -16,14 +17,8 @@ class C_Package(C_observable, C_Bloc):
 
         # Depuis Bloc
         self._elements: list = elements
-        for element in elements:
-            if issubclass(type(element), C_Element) or issubclass(type(element), C_Bloc):
-                if not hasattr(self, element.nom):
-                    setattr(self, element.nom, element)
-                else:
-                    raise KeyError(f"Le package {self.nom} contient deja un attribut {element.nom}")
-            else:
-                raise ValueError(f"L'element {element.nom} fournie pour le package {self.nom} n'est pas de type Element")
+        if len(self._elements):
+            self.ajout_elements(self._elements)
 
     # ==================================================================================================================
     # Depuis Donnees
@@ -37,6 +32,10 @@ class C_Package(C_observable, C_Bloc):
         return self._description
 
     @property
+    def type_element(self) -> str:
+        return 'package'
+
+    @property
     def dependance(self) -> list:
         return self._dependance
 
@@ -44,13 +43,19 @@ class C_Package(C_observable, C_Bloc):
     def random(self) -> bytearray:
         return bytearray(os.urandom(self.taille))
 
-    def factory(self):
-        nouvelle_instance = C_Package(nom=self._nom,
-                                      description=self._description,
-                                      dependance=list(map(lambda x: x.factory(), self._dependance)),
-                                      elements=list(map(lambda x: x.factory(), self._elements)))
-        nouvelle_instance.ajout_observer()
-        return nouvelle_instance
+    def ajout_elements(self, elements: list):
+        self._elements = elements
+        for element in self._elements:
+            if issubclass(type(element), C_Element) or issubclass(type(element), C_Bloc):
+                if not hasattr(self, element.nom):
+                    setattr(self, element.nom, element)
+                else:
+                    raise ErreurNomAttributUtilise(type_element=self.__class__.__name__, nom_element=self.nom, nom_attribut=element.nom)
+            else:
+                raise ValueError(f"L'element {element.nom} fournie pour le package {self.nom} n'est pas de type Element")
+
+    def ajout_dependances(self, dependances: list):
+        self._dependance = dependances
 
     # ==================================================================================================================
     # Depuis Observer

@@ -8,3 +8,12 @@ def extrait_attribut(nom_attribut: str, type_attribut, contenu: dict, obligatoir
     if not isinstance(attr, type_attribut):
         raise TypeError(f"L'attribut {nom_attribut} est de type {str(type(attr))}. Attendu: {str(type_attribut)}")
     return attr
+
+
+def cherche_attribut(objet, chemin_attribut: list):
+    for attr in chemin_attribut:
+        if attr in objet.__dict__:
+            objet = objet.__getattribute__(attr)
+        else:
+            return None
+    return objet
