@@ -1,5 +1,4 @@
-from datetime import datetime
-from Source.Data.M_Librairie import C_Librairie
+from Source.Specifique.M_Librairie import C_Librairie
 import cProfile
 import pstats
 
@@ -21,6 +20,7 @@ def execute():
     new_instance.contenu.contenu4.randomize()
     print(str(librairie.exemple.crc))
     print(str(new_instance.crc))
+
     print(librairie.exemple.valeur.hex())
     print(librairie.exemple.corrupt(element_corrompu="crc", type_corruption='bitabit', bit_index=31).hex())
     print(librairie.exemple.valeur.hex())
