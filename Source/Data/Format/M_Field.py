@@ -1,5 +1,7 @@
 from Source.Observer.M_observable import C_observable
 from Source.Data.Interfaces.M_Donnees import C_Donnees
+from Source.Data.Corrupter.M_AbstractCorrupter import C_AbstractCorrupter
+from Source.Data.Utilitaires.M_Constantes import E_Corruption
 from random import randint
 
 
@@ -39,6 +41,9 @@ class C_Field(C_observable, C_Donnees):
     def taille(self) -> int:
         return self._taille
 
+    def _corrupt(self, type_corruption: str, **kwargs):
+        return C_AbstractCorrupter[E_Corruption.from_str(type_corruption)].corrupt(self.valeur, **kwargs)
+
     # ==================================================================================================================
     # Depuis Donnees
     # ==================================================================================================================
@@ -73,7 +78,7 @@ class C_Field(C_observable, C_Donnees):
             dependance.ajout_observer(self)
 
     def update(self, **kwargs) -> None:
-        raise NotImplementedError
+        print(f"Notification de {self.nom} depuis {kwargs.get('nom_emetteur')} ({kwargs.get('type_emetteur')})")
 
     def randomize(self):
         self.valeur = self.random

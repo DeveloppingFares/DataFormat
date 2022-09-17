@@ -36,6 +36,17 @@ class E_Format(Enum):
             raise NotImplementedError
 
 
+class E_Corruption(Enum):
+    bitabit = "bitabit"
+
+    @classmethod
+    def from_str(cls, label):
+        if label == 'bitabit':
+            return cls.bitabit
+        else:
+            raise NotImplementedError
+
+
 class E_Extension(Enum):
     JSON = ".json"
 

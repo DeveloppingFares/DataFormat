@@ -2,7 +2,7 @@ from Source.Data.Utilitaires.M_Constantes import E_Format
 
 
 class C_AbstractFactory:
-    def __class_getitem__(cls, format_element: str) -> type:
+    def __class_getitem__(cls, format_element: E_Format) -> type:
         if format_element == E_Format.package:
             from Source.Data.Factories.M_PackageFactory import C_PackageFactory
             return C_PackageFactory

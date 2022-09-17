@@ -65,7 +65,7 @@ class C_Bitfield(C_Bloc, C_observable):
                 attr.ajout_observer()
 
     def update(self, **kwargs) -> None:
-        raise NotImplementedError
+        print(f"Notification de {self.nom} depuis {kwargs.get('nom_emetteur')} ({kwargs.get('type_emetteur')})")
 
     # ==================================================================================================================
     # Depuis Bloc
@@ -111,3 +111,20 @@ class C_Bitfield(C_Bloc, C_observable):
     @property
     def elements(self) -> list:
         return self._elements
+
+    def corrupt(self, type_corruption: str, element_corrompu: str, **kwargs) -> bytearray:
+        corrompu = False
+        if any(isinstance(attr, C_Field) for attr in self.__dict__.values()):
+            v = int()
+            for attr in self.__dict__.values():
+                if isinstance(attr, C_Field):
+                    if attr.nom == element_corrompu:
+                        v += attr._corrupt(type_corruption, **kwargs) << attr.offset
+                        corrompu = True
+                    else:
+                        v += attr.valeur << attr.offset
+            if not corrompu:
+                raise AttributeError(f"Package {self.nom} ne contient aucun élément appele {element_corrompu}")
+            return bytearray(v.to_bytes(self.taille, 'big'))
+        else:
+            raise ErreurAucunAttribut(type_element=self.__class__.__name__, nom_element=self.nom)

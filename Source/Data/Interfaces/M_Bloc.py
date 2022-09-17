@@ -1,5 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from Source.Data.Interfaces.M_Donnees import C_Donnees
+from Source.Data.Corrupter.M_AbstractCorrupter import C_AbstractCorrupter
+from Source.Data.Utilitaires.M_Constantes import E_Corruption
 
 
 class C_Bloc(C_Donnees, metaclass=ABCMeta):
@@ -51,6 +53,9 @@ class C_Bloc(C_Donnees, metaclass=ABCMeta):
         if issubclass(c, C_Donnees) and "elements" in c.__dict__ and "taille" in vars(c) and "valeur" in vars(c):
             return True
         return False
+
+    def _corrupt(self, type_corruption: str, **kwargs) -> bytearray:
+        return C_AbstractCorrupter[E_Corruption.from_str(type_corruption)].corrupt(self.valeur, **kwargs)
 
     def randomize(self):
         self.valeur = self.random

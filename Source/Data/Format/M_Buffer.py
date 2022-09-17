@@ -54,7 +54,7 @@ class C_Buffer(C_observable, C_Element):
             dependance.ajout_observer(self)
 
     def update(self, **kwargs) -> None:
-        print(f"Ici {self.nom} qui dit: Salut les mioches!")
+        print(f"Notification de {self.nom} depuis {kwargs.get('nom_emetteur')} ({kwargs.get('type_emetteur')})")
 
     # ==================================================================================================================
     # Depuis Element

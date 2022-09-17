@@ -59,9 +59,9 @@ class C_Reference(C_observable, C_Element):
     def ajout_observer(self):
         pass
 
-    def update(self, **kwargs) -> None:
+    def update(self, **kwargs):
         self.chargement_reference()
-        raise NotImplementedError
+        print(f"Notification de {self.nom} depuis {kwargs.get('nom_emetteur')} ({kwargs.get('type_emetteur')})")
 
     # ==================================================================================================================
     # Depuis Element
