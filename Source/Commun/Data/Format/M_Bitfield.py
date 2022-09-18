@@ -72,36 +72,27 @@ class C_Bitfield(C_Bloc, C_observable):
     # ==================================================================================================================
     @property
     def valeur(self) -> bytearray:
-        if any(isinstance(attr, C_Field) for attr in self.__dict__.values()):
-            v = int()
-            for attr in self.__dict__.values():
-                if isinstance(attr, C_Field):
-                    v += attr.valeur << attr.offset
-            return bytearray(v.to_bytes(self.taille, 'big'))
-        else:
-            raise ErreurAucunAttribut(type_element=self.__class__.__name__, nom_element=self.nom)
+        v = int()
+        for attr in self.__dict__.values():
+            if isinstance(attr, C_Field):
+                v += attr.valeur << attr.offset
+        return bytearray(v.to_bytes(self.taille, 'big'))
 
     @valeur.setter
     def valeur(self, v: bytearray):
         if len(v) != self.taille:
             raise ValueError
-        if any(isinstance(attr, C_Field) for attr in self.__dict__.values()):
-            for attr in self.__dict__.values():
-                if isinstance(attr, C_Field):
-                    attr.valeur = (int.from_bytes(v, 'big') & attr.masque) >> attr.offset
-        else:
-            raise ErreurAucunAttribut(type_element=self.__class__.__name__, nom_element=self.nom)
+        for attr in self.__dict__.values():
+            if isinstance(attr, C_Field):
+                attr.valeur = (int.from_bytes(v, 'big') & attr.masque) >> attr.offset
         self.notify()
 
     @property
     def taille(self) -> int:
-        if any(isinstance(attr, C_Field) for attr in self.__dict__.values()):
-            t = int()
-            for attr in self.__dict__.values():
-                if isinstance(attr, C_Field):
-                    t += attr.taille
-        else:
-            raise ErreurAucunAttribut(type_element=self.__class__.__name__, nom_element=self.nom)
+        t = int()
+        for attr in self.__dict__.values():
+            if isinstance(attr, C_Field):
+                t += attr.taille
         if t % 8 != 0:
             raise AttributeError(f"Bitfield de taille {t} non aligné sur des octets")
         if t // 8 > 4:
@@ -114,17 +105,21 @@ class C_Bitfield(C_Bloc, C_observable):
 
     def corrupt(self, type_corruption: str, element_corrompu: str, **kwargs) -> bytearray:
         corrompu = False
-        if any(isinstance(attr, C_Field) for attr in self.__dict__.values()):
-            v = int()
-            for attr in self.__dict__.values():
-                if isinstance(attr, C_Field):
-                    if attr.nom == element_corrompu:
-                        v += attr._corrupt(type_corruption, **kwargs) << attr.offset
-                        corrompu = True
-                    else:
-                        v += attr.valeur << attr.offset
-            if not corrompu:
-                raise AttributeError(f"Package {self.nom} ne contient aucun élément appele {element_corrompu}")
-            return bytearray(v.to_bytes(self.taille, 'big'))
-        else:
-            raise ErreurAucunAttribut(type_element=self.__class__.__name__, nom_element=self.nom)
+        v = int()
+        for attr in self.__dict__.values():
+            if isinstance(attr, C_Field):
+                if attr.nom == element_corrompu:
+                    v += attr._corrupt(type_corruption, **kwargs) << attr.offset
+                    corrompu = True
+                else:
+                    v += attr.valeur << attr.offset
+        if not corrompu:
+            raise AttributeError(f"Package {self.nom} ne contient aucun élément appele {element_corrompu}")
+        return bytearray(v.to_bytes(self.taille, 'big'))
+
+    def has_attribut(self, nom_attribut: str) -> bool:
+        for attr in self.__dict__.values():
+            if isinstance(attr, C_Field):
+                if attr.nom == nom_attribut:
+                    return True
+        return False

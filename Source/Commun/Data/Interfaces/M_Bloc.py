@@ -20,6 +20,11 @@ class C_Bloc(C_Donnees, metaclass=ABCMeta):
     def valeur(self, v: bytearray):
         raise NotImplementedError
 
+    @property
+    @abstractmethod
+    def elements(self) -> list:
+        raise NotImplementedError
+
     # ==================================================================================================================
     # Depuis Donnees
     # ==================================================================================================================
@@ -50,7 +55,7 @@ class C_Bloc(C_Donnees, metaclass=ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, c):
-        if issubclass(c, C_Donnees) and "elements" in c.__dict__ and "taille" in vars(c) and "valeur" in vars(c):
+        if issubclass(c, C_Donnees) and "elements" in c.__dict__ and "taille" in vars(c) and "valeur" in vars(c) and "elements" in vars(c):
             return True
         return False
 

@@ -27,6 +27,16 @@ class C_Reference(C_observable, C_Element):
     def nom_reference(self) -> str:
         return self._nom_reference
 
+    @property
+    def nom_variable_reference(self) -> str:
+        self.chargement_reference()
+        return self._reference.nom
+
+    @property
+    def reference(self):
+        self.chargement_reference()
+        return self._reference
+
     # ==================================================================================================================
     # Depuis Donnees
     # ==================================================================================================================

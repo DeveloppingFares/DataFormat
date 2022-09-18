@@ -22,7 +22,7 @@ class C_Element(C_Donnees, metaclass=ABCMeta):
 
     @classmethod
     def __subclasshook__(cls, c):
-        if issubclass(c, C_Donnees) and "taille" in vars(c) and "valeur" in vars(c) and "offset" not in vars(c):
+        if issubclass(c, C_Donnees) and "taille" in vars(c) and "valeur" in vars(c) and "offset" not in vars(c) and "elements" not in vars(c):
             return True
         return False
 

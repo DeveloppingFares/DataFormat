@@ -15,5 +15,5 @@ def cherche_attribut(objet, chemin_attribut: list):
         if attr in objet.__dict__:
             objet = objet.__getattribute__(attr)
         else:
-            return None
+            raise KeyError(f"L'attribut {'.'.join(chemin_attribut)} est introuvable")
     return objet

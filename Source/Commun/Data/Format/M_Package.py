@@ -1,8 +1,10 @@
 import os
 from Source.Commun.Data.Format import ErreurNomAttributUtilise
 from Source.Commun.Observer.M_observable import C_observable
+from Source.Commun.Data.Interfaces.M_Donnees import C_Donnees
 from Source.Commun.Data.Interfaces.M_Bloc import C_Bloc
 from Source.Commun.Data.Interfaces.M_Element import C_Element
+from Source.Commun.Data.Format.M_Reference import C_Reference
 
 
 class C_Package(C_observable, C_Bloc):
@@ -75,35 +77,26 @@ class C_Package(C_observable, C_Bloc):
     # ==================================================================================================================
     @property
     def valeur(self) -> bytearray:
-        if any(issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc) for attr in self.__dict__.values()):
-            v = bytearray()
-            for attr in self.__dict__.values():
-                if issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc):
-                    v += attr.valeur
-            return v
-        else:
-            raise AttributeError(f"Package {self.nom} ne contient aucun élément")
+        v = bytearray()
+        for attr in self.__dict__.values():
+            if issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc):
+                v += attr.valeur
+        return v
 
     @valeur.setter
     def valeur(self, v: bytearray):
-        if any(issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc) for attr in self.__dict__.values()):
-            for attr in self.__dict__.values():
-                if issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc):
-                    attr.valeur = v[:attr.taille]
-                    del v[:attr.taille]
-        else:
-            raise AttributeError(f"Package {self.nom} ne contient aucun élément")
+        for attr in self.__dict__.values():
+            if issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc):
+                attr.valeur = v[:attr.taille]
+                del v[:attr.taille]
         self.notify()
 
     @property
     def taille(self) -> int:
         t: int = 0
-        if any(issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc) for attr in self.__dict__.values()):
-            for attr in self.__dict__.values():
-                if issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc):
-                    t += attr.taille
-        else:
-            raise AttributeError(f"Package {self.nom} ne contient aucun élément")
+        for attr in self.__dict__.values():
+            if issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc):
+                t += attr.taille
         return t
 
     @property
@@ -112,17 +105,51 @@ class C_Package(C_observable, C_Bloc):
 
     def corrupt(self, type_corruption: str, element_corrompu: str, **kwargs) -> bytearray:
         corrompu = False
-        if any(issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc) for attr in self.__dict__.values()):
-            v = bytearray()
-            for attr in self.__dict__.values():
-                if issubclass(type(attr), C_Element) or issubclass(type(attr), C_Bloc):
-                    if attr.nom == element_corrompu:
+        v = bytearray()
+        for attr in self.__dict__.values():
+            if issubclass(type(attr), C_Element):
+                if attr.nom == element_corrompu:
+                    v += attr._corrupt(type_corruption=type_corruption, **kwargs)
+                    corrompu = True
+                # On effectue la corruption dans l'objet reference plutot que dans la référence
+                elif type(attr) == C_Reference:
+                    if attr.nom_variable_reference == element_corrompu:
                         v += attr._corrupt(type_corruption=type_corruption, **kwargs)
                         corrompu = True
+                    elif issubclass(type(attr.reference), C_Bloc):
+                        if attr.reference.has_attribut(element_corrompu):
+                            v += attr.reference.corrupt(type_corruption=type_corruption, element_corrompu=element_corrompu, **kwargs)
+                            corrompu = True
                     else:
                         v += attr.valeur
-            if not corrompu:
-                raise AttributeError(f"Package {self.nom} ne contient aucun élément appele {element_corrompu}")
-            return v
-        else:
-            raise AttributeError(f"Package {self.nom} ne contient aucun élément")
+                else:
+                    v += attr.valeur
+            elif issubclass(type(attr), C_Bloc):
+                if attr.nom == element_corrompu:
+                    v += attr._corrupt(type_corruption=type_corruption, **kwargs)
+                    corrompu = True
+                elif attr.has_attribut(element_corrompu):
+                    v += attr.corrupt(type_corruption=type_corruption, element_corrompu=element_corrompu, **kwargs)
+                    corrompu = True
+                else:
+                    v += attr.valeur
+        if not corrompu:
+            raise AttributeError(f"Package {self.nom} ne contient aucun élément appele {element_corrompu}")
+        return v
+
+    def has_attribut(self, nom_attribut: str) -> bool:
+        for attr in self.__dict__.values():
+            if issubclass(type(attr), C_Bloc):
+                if attr.has_attribut(nom_attribut) or attr.nom == nom_attribut:
+                    return True
+            elif issubclass(type(attr), C_Donnees):
+                if attr.nom == nom_attribut:
+                    return True
+                # On effectue la recherche dans l'objet reference plutot que dans la référence
+                elif type(attr) == C_Reference:
+                    if attr.nom_variable_reference == nom_attribut:
+                        return True
+                    elif issubclass(type(attr.reference), C_Bloc):
+                        if attr.reference.has_attribut(nom_attribut):
+                            return True
+        return False
