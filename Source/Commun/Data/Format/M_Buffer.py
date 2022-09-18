@@ -21,7 +21,7 @@ class C_Buffer(C_observable, C_Element):
         self._taille_variable: C_Reference = taille_variable
 
         # Specifique
-        self._valeur: bytearray = bytearray()
+        self._valeur = None
         if self._taille is not None:
             self.valeur: bytearray = valeur if valeur is not None else self.random
 
@@ -76,6 +76,8 @@ class C_Buffer(C_observable, C_Element):
     # ==================================================================================================================
     @property
     def valeur(self) -> bytearray:
+        if self._valeur is None:
+            self.randomize()
         return self._valeur
 
     @valeur.setter
