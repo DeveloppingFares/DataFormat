@@ -15,11 +15,23 @@ class C_BufferFactory(C_DonneesFactory):
         description = extrait_attribut(nom_attribut="description", type_attribut=str, contenu=kwargs)
         valeur = extrait_attribut(nom_attribut="valeur", type_attribut=str, contenu=kwargs, obligatoire=False)
         valeur = bytearray.fromhex(valeur) if valeur is not None else valeur
-        taille = extrait_attribut(nom_attribut="taille", type_attribut=int, contenu=kwargs)
+        taille = extrait_attribut(nom_attribut="taille", type_attribut=int, contenu=kwargs, obligatoire=False)
+        taille_variable = extrait_attribut(nom_attribut="taille_variable", type_attribut=str, contenu=kwargs, obligatoire=False)
+        if taille is None and taille_variable is None:
+            raise Exception("Un champ taille ou un champ taille_variable doivent etre définis pour les buffers")
+        if taille is not None and taille_variable is not None:
+            raise Exception("Les buffers ne peuvent pas contenir un champ taille et un champ taille variable")
         input_dependances = extrait_attribut(nom_attribut="dependance", type_attribut=list, contenu=kwargs)
 
         # Création nouvelle instance
-        instance = C_Buffer(nom=nom, description=description, dependance=[], taille=taille, valeur=valeur)
+        if taille is not None:
+            instance = C_Buffer(nom=nom, description=description, dependance=[], taille=taille, taille_variable=None, valeur=valeur)
+        elif taille_variable is not None:
+            instance = C_Buffer(nom=nom, description=description, dependance=[], taille=None, taille_variable=None, valeur=valeur)
+            reference_taille_variable = C_AbstractFactory[E_Format.from_str("reference")](self.librairie, instance if self.bloc is None else self.bloc).creerDonnees(nom='taille_variable', nom_reference=taille_variable)
+            instance.set_taille_variable_reference(reference_taille_variable)
+        else:
+            raise NotImplementedError
 
         # Dependance
         dependances = list()
@@ -31,7 +43,12 @@ class C_BufferFactory(C_DonneesFactory):
 
     def creerDonneesDepuisTemplate(self, template: C_Buffer) -> C_Buffer:
         # Création nouvelle instance
-        instance = C_Buffer(nom=template.nom, description=template.description, dependance=[], taille=template.taille, valeur=None)
+        if template.taille_variable is None:
+            instance = C_Buffer(nom=template.nom, description=template.description, dependance=[], taille=template.taille, taille_variable=None, valeur=None)
+        else:
+            instance = C_Buffer(nom=template.nom, description=template.description, dependance=[], taille=None, taille_variable=None, valeur=None)
+            reference_taille_variable = C_AbstractFactory[E_Format.from_str("reference")](self.librairie, instance if self.bloc is None else self.bloc).creerDonneesDepuisTemplate(template.taille_variable)
+            instance.set_taille_variable_reference(reference_taille_variable)
 
         # Dependance
         dependances = list()

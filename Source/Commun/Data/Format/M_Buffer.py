@@ -1,11 +1,13 @@
 import os
 from Source.Commun.Observer.M_observable import C_observable
 from Source.Commun.Data.Interfaces.M_Element import C_Element
+from Source.Commun.Data.Format.M_Reference import C_Reference
+from Source.Commun.Data.Format.M_Range import C_Range
 from Source.Commun.Data.Format import ErreurValeurHorsLimite
 
 
 class C_Buffer(C_observable, C_Element):
-    def __init__(self, nom: str, description: str, dependance: list, taille: int, valeur: bytearray):
+    def __init__(self, nom: str, description: str, dependance: list, taille: int, taille_variable: C_Reference, valeur: bytearray):
         # Depuis Observable
         super().__init__()
 
@@ -16,9 +18,22 @@ class C_Buffer(C_observable, C_Element):
 
         # Depuis Element
         self._taille: int = taille
+        self._taille_variable: C_Reference = taille_variable
 
         # Specifique
-        self._valeur: bytearray = valeur if valeur is not None else self.random
+        self._valeur: bytearray = bytearray()
+        if self._taille is not None:
+            self.valeur: bytearray = valeur if valeur is not None else self.random
+
+    @property
+    def taille_variable(self) -> C_Reference:
+        if self._taille_variable is not None:
+            if type(self._taille_variable.reference) != C_Range:
+                raise TypeError("La reference doit pointer vers une variable de type range")
+        return self._taille_variable
+
+    def set_taille_variable_reference(self, reference: C_Reference):
+        self._taille_variable = reference
 
     # ==================================================================================================================
     # Depuis Donnees
@@ -72,4 +87,4 @@ class C_Buffer(C_observable, C_Element):
 
     @property
     def taille(self) -> int:
-        return self._taille
+        return self._taille if self._taille is not None else self.taille_variable.reference.valeur_entiere

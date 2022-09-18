@@ -36,7 +36,7 @@
           "nom": "contenu1",
           "description": "",
           "type_element": "buffer",
-          "taille": 8,
+          "taille_variable": "volatile.contenu.contenu5",
           "dependance": []
         },
         {
@@ -55,6 +55,15 @@
           "nom": "contenu4",
           "type_element": "reference",
           "nom_reference": "statique.bitfield1"
+        },
+        {
+          "nom": "contenu5",
+          "description": "",
+          "type_element": "range",
+          "taille":  2,
+          "dependance": [],
+          "valeur_min": 0,
+          "valeur_max": 256
         }
       ]
     },

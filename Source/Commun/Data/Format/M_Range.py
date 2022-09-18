@@ -8,7 +8,6 @@ class C_Range(C_observable, C_Element):
         self._valeur_min: int = valeur_min
         self._valeur_max: int = valeur_max
         self._valeur: int = int()
-        self.valeur = valeur if valeur is not None else self.random
 
         # Depuis Observable
         super().__init__()
@@ -20,6 +19,7 @@ class C_Range(C_observable, C_Element):
 
         # Depuis Element
         self._taille: int = taille
+        self.valeur = valeur if valeur is not None else self.random
 
     @property
     def valeur_min(self) -> int:
@@ -28,6 +28,10 @@ class C_Range(C_observable, C_Element):
     @property
     def valeur_max(self) -> int:
         return self._valeur_max
+
+    @property
+    def valeur_entiere(self) -> int:
+        return self._valeur
 
     # ==================================================================================================================
     # Depuis Donnees
